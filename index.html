@@ -247,7 +247,7 @@ function updateTimer(){
 }
 function render(){
   const q=questions[current];
-  $("qnum").textContent=`Küsimus ${current+1} / ${questions.length}`;
+  $("qnum").textContent=`Küsimus ${current+1} / ${questions.length}`; 
   $("question").textContent=q[0];
   $("progress").style.width=((current+1)/questions.length*100)+"%";
   $("answers").innerHTML="";
