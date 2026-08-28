@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liiklusstest</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f5f7;color:#17202a}
+header{background:#111827;color:white;padding:22px 18px;text-align:center}
+header h1{margin:0;font-size:30px}
+header p{margin:7px 0 0;color:#cbd5e1}
+.container{max-width:850px;margin:30px auto;padding:0 16px}
+.card{background:white;border-radius:16px;padding:26px;box-shadow:0 5px 20px #00000012;margin-bottom:18px}
+h2{margin-top:0}
+button{border:0;border-radius:10px;padding:13px 18px;font-size:16px;cursor:pointer;font-weight:700}
+.primary{background:#2563eb;color:white}
+.primary:hover{background:#1d4ed8}
+.answer{display:block;width:100%;text-align:left;background:#f8fafc;border:2px solid #e2e8f0;margin:10px 0;padding:14px;border-radius:10px;cursor:pointer;font-size:16px}
+.answer:hover{border-color:#2563eb;background:#eff6ff}
+.answer.selected{border-color:#2563eb;background:#dbeafe}
+.answer.correct{border-color:#16a34a;background:#dcfce7}
+.answer.wrong{border-color:#dc2626;background:#fee2e2}
+.progress{height:10px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin:15px 0 25px}
+.progress div{height:100%;background:#2563eb;width:0}
+.hidden{display:none}
+.result{text-align:center}
+.score{font-size:52px;font-weight:800;margin:15px}
+.small{color:#64748b}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:bold}
+</style>
+</head>
+<body>
+<header>
+  <h1>🚗 Liiklusstest</h1>
+  <p>Harjuta liiklusteooriat lihtsalt ja tasuta</p>
+</header>
+
+<div class="container">
+  <div id="home" class="card">
+    <span class="badge">B-kategooria</span>
+    <h2>Liiklusteooria harjutustest</h2>
+    <p>Vasta küsimustele ja vaata lõpus oma tulemust.</p>
+    <button class="primary" onclick="startTest()">Alusta testi</button>
+  </div>
+
+  <div id="test" class="card hidden">
+    <div class="small" id="counter"></div>
+    <div class="progress"><div id="bar"></div></div>
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <div class="nav">
+      <button onclick="previousQuestion()">← Eelmine</button>
+      <button class="primary" id="nextBtn" onclick="nextQuestion()">Järgmine →</button>
+    </div>
+  </div>
+
+  <div id="result" class="card result hidden">
+    <h2>Test lõpetatud! 🎉</h2>
+    <div class="score" id="score"></div>
+    <p id="resultText"></p>
+    <button class="primary" onclick="startTest()">Proovi uuesti</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    q:"Mida tähendab CNG?",
+    a:["Compressed Natural Gas ehk surumaagaas","Central Navigation Guide","Common Natural Gas","Compressed Nitrogen Gas"],
+    correct:0
+  },
+  {
+    q:"Milline märk tähistab Euroopa teedevõrgu teed?",
+    a:["Punane märk numbriga 2","Roheline märk tähisega E77","Kollane märk numbriga 58","Sinine märk numbriga 77"],
+    correct:1
+  },
+  {
+    q:"Mis on sõidurada?",
+    a:["Sõidutee pikiriba, kus võivad sõidukid liikuda ainult ühes reas","Teepeenar","Ainult ühissõidukitele mõeldud teeosa","Kõnnitee osa"],
+    correct:0
+  },
+  {
+    q:"Kas valget pidevjoont tohib ületada?",
+    a:["Alati","Ainult öösel","Kui see tähistab sõidutee äärt","Mitte kunagi"],
+    correct:2
+  },
+  {
+    q:"Mida tuleb teha enne raudteeülesõidukoha ületamist, kui seda nõuab märk „Peatu ja anna teed”?",
+    a:["Peatada sõiduk ja anda teed","Suurendada kiirust","Lülitada ohutuled sisse ja sõita edasi","Anda ainult helisignaali"],
+    correct:0
+  },
+  {
+    q:"Millise tulega näitab juht tavaliselt vasakpöördest?",
+    a:["Parempoolse suunatulega","Vasakpoolse suunatulega","Ohutuledega","Udutulega"],
+    correct:1
+  }
+];
+
+let current=0, selected=Array(questions.length).fill(null);
+
+function startTest(){
+  current=0;
+  selected=Array(questions.length).fill(null);
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("test").classList.remove("hidden");
+  showQuestion();
+}
+
+function showQuestion(){
+  const item=questions[current];
+  document.getElementById("counter").textContent=`Küsimus ${current+1} / ${questions.length}`;
+  document.getElementById("bar").style.width=((current+1)/questions.length*100)+"%";
+  document.getElementById("question").textContent=item.q;
+  const box=document.getElementById("answers");
+  box.innerHTML="";
+  item.a.forEach((answer,i)=>{
+    const b=document.createElement("button");
+    b.className="answer";
+    b.textContent=answer;
+    if(selected[current]===i)b.classList.add("selected");
+    b.onclick=()=>{selected[current]=i;showQuestion();};
+    box.appendChild(b);
+  });
+  document.getElementById("nextBtn").textContent=current===questions.length-1?"Lõpeta test":"Järgmine →";
+}
+
+function nextQuestion(){
+  if(selected[current]===null){
+    alert("Vali enne vastus.");
+    return;
+  }
+  if(current<questions.length-1){current++;showQuestion();}
+  else finishTest();
+}
+
+function previousQuestion(){
+  if(current>0){current--;showQuestion();}
+}
+
+function finishTest(){
+  let score=0;
+  questions.forEach((q,i)=>{if(selected[i]===q.correct)score++;});
+  document.getElementById("test").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("score").textContent=`${score} / ${questions.length}`;
+  const percent=Math.round(score/questions.length*100);
+  document.getElementById("resultText").textContent=
+    percent>=80?"Väga hea! 🚗💨":"Harjuta veel ja proovi uuesti!";
+}
+</script>
+</body>
+</html>
