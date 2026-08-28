@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liiklustestid – AM, A ja B</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#18212b;--muted:#66717d;--accent:#146ef5;--accent2:#0d5bd3;--good:#159447;--bad:#d9363e;--border:#dfe4ea}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#0f1720,#1d2b3a);color:#fff;padding:28px 18px;text-align:center}
+header h1{margin:0 0 8px;font-size:30px}
+header p{margin:0;color:#d8e0e8}
+.container{max-width:980px;margin:24px auto;padding:0 16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 28px rgba(20,35,50,.07);padding:22px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.tab{border:1px solid var(--border);background:#fff;border-radius:12px;padding:14px;font-weight:800;cursor:pointer}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.info{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.pill{background:#eef4ff;color:#164e9b;border-radius:999px;padding:8px 12px;font-weight:700}
+.start{width:100%;border:0;border-radius:12px;background:var(--accent);color:#fff;padding:15px;font-size:17px;font-weight:800;cursor:pointer}
+.start:hover{background:var(--accent2)}
+.hidden{display:none!important}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.progress{height:9px;background:#e9edf1;border-radius:99px;overflow:hidden;flex:1}
+.progress span{display:block;height:100%;background:var(--accent);transition:.2s}
+.timer{font-weight:900;font-size:20px;min-width:86px;text-align:right}
+.qnum{color:var(--muted);font-weight:700;margin-bottom:8px}
+.question{font-size:22px;line-height:1.35;font-weight:800;margin-bottom:18px}
+.answers{display:grid;gap:11px}
+.answer{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;background:#fff;border:2px solid var(--border);border-radius:13px;padding:15px;cursor:pointer;font-size:16px}
+.answer:hover{border-color:#a9bfdc;background:#f8fbff}
+.answer.selected{border-color:var(--accent);background:#eef4ff}
+.answer.correct{border-color:var(--good);background:#eefaf3}
+.answer.wrong{border-color:var(--bad);background:#fff0f1}
+.letter{font-weight:900;min-width:25px}
+.actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:800;cursor:pointer}
+.secondary{background:#e9edf1;color:#26323d}
+.primary{background:var(--accent);color:#fff}
+.danger{background:#fff0f1;color:#b4232a}
+.explanation{margin-top:16px;padding:14px;border-radius:12px;background:#f5f7f9;color:#45515d;line-height:1.5}
+.result{text-align:center}
+.score{font-size:56px;font-weight:900;margin:10px 0}
+.result.good .score{color:var(--good)}
+.result.bad .score{color:var(--bad)}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:#f6f8fa;border-radius:12px;padding:15px}
+.stat b{display:block;font-size:23px}
+.review{margin-top:20px;text-align:left}
+.review-item{border:1px solid var(--border);border-radius:12px;padding:14px;margin:10px 0}
+.review-item strong{display:block;margin-bottom:7px}
+small{color:var(--muted)}
+footer{text-align:center;color:var(--muted);padding:28px 12px;font-size:13px}
+@media(max-width:650px){header h1{font-size:24px}.tabs{grid-template-columns:1fr}.question{font-size:19px}.statgrid{grid-template-columns:1fr}.topbar{align-items:flex-start}.actions{flex-wrap:wrap}.actions .btn{flex:1}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Liiklustestid</h1>
+  <p>AM-, A- ja B-kategooria harjutustestid</p>
+</header>
+
+<div class="container">
+  <section id="home" class="card">
+    <h2>Vali kategooria</h2>
+    <div class="tabs">
+      <button class="tab active" data-cat="AM">AM</button>
+      <button class="tab" data-cat="A">A / A1 / A2</button>
+      <button class="tab" data-cat="B">B / B1</button>
+    </div>
+    <div class="info">
+      <span class="pill">30 küsimust</span>
+      <span class="pill">30 minutit</span>
+      <span class="pill">Üks õige vastus</span>
+    </div>
+    <p id="categoryText">AM-kategooria test keskendub mopeedi, liiklusohutuse ja üldiste liiklusreeglite teemadele.</p>
+    <button class="start" id="startBtn">Alusta testi</button>
+    <p><small>See on iseseisev harjutuskeskkond, mitte Transpordiameti ametlik eksam ega ametlike eksamiküsimuste koopia.</small></p>
+  </section>
+
+  <section id="test" class="card hidden">
+    <div class="topbar">
+      <div class="progress"><span id="progress"></span></div>
+      <div class="timer" id="timer">30:00</div>
+    </div>
+    <div class="qnum" id="qnum"></div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div id="explanation" class="explanation hidden"></div>
+    <div class="actions">
+      <button class="btn danger" id="quitBtn">Katkesta</button>
+      <button class="btn secondary" id="prevBtn">Eelmine</button>
+      <button class="btn primary" id="nextBtn">Järgmine</button>
+    </div>
+  </section>
+
+  <section id="result" class="card hidden result">
+    <h2>Test lõpetatud</h2>
+    <div class="score" id="score"></div>
+    <div id="resultText"></div>
+    <div class="statgrid">
+      <div class="stat"><small>Õiged</small><b id="correctCount">0</b></div>
+      <div class="stat"><small>Valed</small><b id="wrongCount">0</b></div>
+      <div class="stat"><small>Vastamata</small><b id="blankCount">0</b></div>
+    </div>
+    <button class="btn primary" id="againBtn">Uus test</button>
+    <div class="review" id="review"></div>
+  </section>
+</div>
+
+<footer>Harjutamiseks loodud liiklustestide veebileht. Reeglite puhul kontrolli alati kehtivat liiklusseadust ja Transpordiameti infot.</footer>
+
+<script>
+const tests = {
+AM: [
+["Mis on mopeedi puhul eriti oluline enne sõidu alustamist?",["Kontrollida ainult kütusekogust","Veenduda, et sõiduk ja selle tuled ning pidurid on korras","Kontrollida ainult rehvide värvi"],1,"Sõiduk peab olema enne liiklusesse minekut tehniliselt ohutu."],
+["Milline sõiduk kuulub AM-kategooriasse?",["Nõuetele vastav mopeed","Kõik mootorrattad","Kõik sõiduautod"],0,"AM-kategooria on seotud mopeedidega."],
+["Mida peab juht tegema, kui teeolud muutuvad järsku väga libedaks?",["Suurendama kiirust","Vähendama kiirust ja suurendama ettevaatlikkust","Sõitma võimalikult tee keskel"],1,"Libedal teel tuleb kiirus kohandada tee- ja ilmastikuoludele."],
+["Kas kiiruspiirang on alati lubatud kiirus, mida peab sõitma?",["Jah","Ei","Ainult linnas"],1,"Piirang näitab suurimat lubatud kiirust; ohutu kiirus võib olla väiksem."],
+["Mida tähendab liiklusmärk „Anna teed“?",["Sul on alati eesõigus","Peate andma teed teisele liiklejale, kui liiklusolukord seda nõuab","Peate alati peatuma"],1,"Märk kohustab andma teed, kuid peatumine ei ole alati vajalik."],
+["Kuidas tuleb ülekäigurajale lähenedes käituda?",["Sõita sama kiirusega","Vähendada kiirust ja olla valmis peatuma","Kiirendada, et ülekäigurada kiiresti läbida"],1,"Ülekäiguraja läheduses tuleb arvestada jalakäijatega."],
+["Mida tähendab pidev pikijoon sõiduteel?",["Seda võib alati ületada","Selle ületamine on üldjuhul keelatud","See tähistab parkimiskohta"],1,"Pideva joone tähendus sõltub konkreetsest märgistusest, kuid seda ei tohi üldjuhul ületada."],
+["Millal peab kasutama sõidutuledena lähitulesid või muid nõutud tulesid?",["Vastavalt liikluseeskirjadele ja nähtavusoludele","Ainult suvel","Ainult parklas"],0,"Sõiduki tuled peavad vastama liiklusseaduse nõuetele."],
+["Mida teha, kui sõiduk hakkab sõidu ajal külglibisema?",["Teha järsk rooliliigutus","Jääda rahulikuks ja vältida järske liigutusi","Lülitada mootor kohe välja"],1,"Libisemise korral on oluline säilitada kontroll ja vältida järske juhtimisvõtteid."],
+["Kas sõidu ajal tohib telefoni käes hoida?",["Jah, kui tee on tühi","Üldjuhul ei tohi juhtimise ajal telefoni käes hoida","Jah, kui sõidad aeglaselt"],1,"Juht peab keskenduma juhtimisele ning käes oleva telefoni kasutamine on keelatud."],
+["Mida tähendab ohutu pikivahe?",["Vahe, mis võimaldab vajadusel ohutult peatuda","Alati täpselt üks meeter","Vahe, mis on vajalik ainult maanteel"],0,"Pikivahe peab arvestama kiiruse, tee- ja ilmastikuoludega."],
+["Millal võib sõiduteed ületada jalakäijana?",["Ohutus kohas ja liiklusreegleid järgides","Alati lähimast kohast","Ainult sõidutee keskelt"],0,"Teed tuleb ületada selleks ette nähtud või ohutus kohas."],
+["Mida näitab punane foorituli?",["Sõit on lubatud","Sõit on keelatud","Lubatud on ainult vasakpööre"],1,"Punane tuli keelab liikumise."],
+["Mida näitab kollane foorituli?",["See annab alati õiguse kiirendada","See tähendab peatumist, kui ohutult on võimalik peatuda","See on sama mis roheline"],1,"Kollane tuli keelab üldjuhul liikumise, välja arvatud juhul, kui ohutu peatumine pole enam võimalik."],
+["Mida tähendab roheline foorituli?",["Liikumine on lubatud, järgides muid liiklusnõudeid","Alati võib sõita ilma vaatamata","Lubatud on ainult tagurdamine"],0,"Roheline tuli lubab liikuda, kuid ei vabasta juhti ettevaatusest."],
+["Kuidas tuleb läheneda raudteeülesõidule?",["Tähelepanelikult ja valmis peatuma","Alati täiskiirusel","Ainult vasakule vaadates"],0,"Raudteeülesõidul tuleb olla eriti tähelepanelik."],
+["Mida peab tegema alarmsõiduki läheneva sireeni ja vilkuritega?",["Ignoreerima seda","Võimaldama alarmsõidukile ohutult mööduda","Sõitma alarmsõiduki järel"],1,"Eritalituse sõidukile tuleb anda võimalus ohutult liikuda."],
+["Mida tähendab liiklusmärk „Sõidukiiruse piirang“?",["Soovituslik kiirus","Suurim lubatud kiirus märgil näidatud ulatuses","Vähim lubatud kiirus"],1,"Märk määrab suurima lubatud sõidukiiruse."],
+["Kas nähtavuse halvenemisel peab kiirust vähendama?",["Jah, kui see on ohutuse tagamiseks vajalik","Ei","Ainult öösel"],0,"Kiirus tuleb kohandada nähtavusele ja muudele liiklusoludele."],
+["Mida teha enne pöörde sooritamist?",["Anda nõuetekohaselt suunamärguanne ja veenduda manöövri ohutuses","Keerata kohe","Vaadata ainult tahavaatepeeglisse"],0,"Manöövrist tuleb aegsasti märku anda ja kontrollida liiklusolukorda."],
+["Mida tähendab parema käe reegel?",["Teatud reguleerimata ristmikul tuleb anda teed paremalt lähenevale sõidukile","Alati tuleb anda teed vasakult tulevale sõidukile","See kehtib ainult parklas"],0,"Parema käe reegel kehtib siis, kui eesõigus pole muul viisil määratud."],
+["Kas jalgratturiga tuleb möödumisel hoida ohutut külgvahet?",["Jah","Ei","Ainult linnas"],0,"Jalgrattur on liikluses haavatav liikleja ja möödumine peab olema ohutu."],
+["Mida teha, kui sõiduteele ilmub ootamatu takistus?",["Pidurdada või manööverdada ohutult vastavalt olukorrale","Sulguda silmad","Kiirendada"],0,"Juht peab ohu vältimiseks rakendama sobivaid ohutuid võtteid."],
+["Mida peab mopeedijuht kandma?",["Seaduses nõutud kaitsevarustust, sealhulgas nõuetekohast kiivrit","Ainult päikeseprille","Mitte midagi erilist"],0,"Mopeedijuhil on kiivri kandmise nõue."],
+["Kas kaasreisija vedamisel peab arvestama sõiduki ja varustuse nõuetega?",["Jah","Ei","Ainult maanteel"],0,"Kaasreisija vedu peab vastama sõiduki ja liiklusreeglite nõuetele."],
+["Mida teha, kui rehvi haarduvus on vihma tõttu väiksem?",["Vähendada vajadusel kiirust ja suurendada pikivahet","Kiirendada","Sõita teepervel"],0,"Märg tee pikendab pidurdusteekonda ja vähendab haarduvust."],
+["Kas juht võib sõita nii kiiresti, et ei suuda nähtavuse piires peatuda?",["Ei","Jah","Ainult sirgel teel"],0,"Kiirus peab võimaldama peatuda eespoolse nähtavuse piires."],
+["Mida tähendab „möödasõit“?",["Ees liikuvast sõidukist ettejõudmist oma sõidurajalt välja sõites","Ainult seisvast sõidukist möödumist","Sõitmist parkimiskohale"],0,"Möödasõit on liiklusseaduses eraldi määratletud manööver."],
+["Millal on möödasõit ohtlik?",["Näiteks siis, kui nähtavus või vastassuunaliiklus ei võimalda seda ohutult teha","Alati sirgel teel","Ainult päeval"],0,"Möödasõidu ohutus sõltub nähtavusest, teest ja liiklusoludest."],
+["Miks ei tohi sõidukiirust põhjendamatult suurendada enne ristmikku?",["Sest ristmikul võivad tekkida ootamatud liiklusolukorrad","Sest mopeed ei tohi ristmikule sõita","Sest ristmikud on alati libedad"],0,"Ristmikule lähenedes peab juht suutma liiklusolukorrale reageerida."]
+],
+A: [
+["Mis on mootorrattaga sõites kõige olulisem põhjus hoida piisavat pikivahet?",["Mootorratas võib vajada kiiret pidurdamist ja on teistele vähem märgatav","Mootorratas on alati aeglasem","Pikivahe pole vajalik"],0,"Piisav pikivahe annab reageerimiseks ja pidurdamiseks aega."],
+["Miks on mootorrattur vihmaga eriti ettevaatlik?",["Haarduvus võib väheneda ja pidurdusteekond pikeneda","Rehvid muutuvad alati suuremaks","Vihm parandab haarduvust"],0,"Märg teekate võib vähendada rehvi ja tee vahelist haarduvust."],
+["Kuidas mõjutab sõiduasend mootorratta juhitavust?",["Õige ja stabiilne sõiduasend aitab mootorratast kontrollida","Sõiduasend ei mõjuta midagi","Mida rohkem juhtrauale toetuda, seda parem"],0,"Stabiilne kehaasend aitab säilitada kontrolli."],
+["Mida tuleb enne mootorrattaga sõitu kontrollida?",["Pidureid, rehve, tulesid, juhtimisseadmeid ja muid olulisi osi","Ainult kütust","Ainult signaali"],0,"Enne sõitu tuleb hinnata sõiduki tehnilist seisukorda."],
+["Miks ei tohi mootorrattaga kurvi siseneda liiga suure kiirusega?",["Kiiruse vähendamiseks ja trajektoori muutmiseks jääb vähem võimalusi","Sest mootorratas peab kurvis alati seisma","Sest kurvis ei tohi kunagi pidurdada"],0,"Liiga suur kiirus vähendab võimalust kurvi ohutult läbida."],
+["Mida tähendab vastusõidukist möödumine?",["Vastusõitvast sõidukist tuleb üldjuhul mööduda paremalt","Alati vasakult","Ainult mootorrattaga vasakult"],0,"Liiklusseadus sätestab vastusõidukist möödumise põhimõtte."],
+["Kas mootorrattur peab kasutama nõuetekohast kaitsekiivrit?",["Jah","Ei","Ainult maanteel"],0,"Mootorrattaga sõites on nõuetekohane kaitsekiiver oluline kohustuslik turvavarustus."],
+["Miks võib rööbas või teekatte ebatasasus mootorrattale ohtlik olla?",["See võib mõjutada ratta stabiilsust ja sõidutrajektoori","See suurendab alati pidamist","See ei mõjuta mootorratast"],0,"Kahe rattaga sõiduk on teekatte muutustele tundlikum."],
+["Mida teha, kui sõidad mootorrattaga märjale teekattemärgistusele?",["Vähendada järskude liigutuste tegemist ja olla ettevaatlik","Kiirendada järsult","Pidurdada ainult esipiduriga maksimaalselt"],0,"Märg teekattemärgistus võib olla libedam kui ümbritsev asfalt."],
+["Millal on mootorrattaga möödasõit põhjendamatult riskantne?",["Kui nähtavus on ebapiisav või manöövri lõpetamine pole kindlalt ohutu","Kui tee on sirge ja nähtav","Ainult öösel"],0,"Möödasõidu puhul peab kogu manööver olema ohutu."],
+["Mida peab mootorrattur tegema enne reavahetust?",["Kontrollima peegleid ja pimenurka ning andma suunamärguande","Keerama kohe","Vaatama ainult ette"],0,"Kahe rattaga sõidukil on pimenurga kontroll eriti oluline."],
+["Miks ei ole mõistlik sõita teise sõiduki pimenurgas?",["Teine juht ei pruugi mootorratast märgata","Mootorratas muutub aeglasemaks","See säästab alati kütust"],0,"Pimenurgas võib teise sõiduki juht manöövrit alustada mootorratast märkamata."],
+["Mida teha, kui mootorratta esiratas kaotab ebatasasel teel stabiilsuse?",["Vältida paanikat ja järske juhtimisliigutusi ning säilitada kontroll","Keerata juhtraud järsult","Sulgeda silmad"],0,"Rahulik juhtimine aitab vältida kontrolli kaotamist."],
+["Kuidas mõjutab kaasreisija mootorratta juhitavust?",["Massi ja raskuskeskme muutus võib mõjutada kiirendust, pidurdamist ja kurvisõitu","Ei mõjuta kunagi","Mootorratas muutub alati kergemaks"],0,"Kaasreisija muudab mootorratta dünaamikat."],
+["Miks tuleb mootorrattal veos või pagas korralikult kinnitada?",["Lahtine pagas võib muuta tasakaalu ja põhjustada ohu","Pagas ei mõjuta sõitu","Ainult välimuse pärast"],0,"Halvasti kinnitatud pagas võib nihkuda või maha kukkuda."],
+["Milline pidurdamisvõte on üldjuhul tõhusam?",["Mõlema piduri kontrollitud kasutamine vastavalt olukorrale","Ainult tagapidur alati","Ainult esipidur alati"],0,"Mõlema piduri õige kasutamine aitab tõhusalt aeglustada."],
+["Mida peab tegema kurvis, kui märkad ootamatut takistust?",["Vähendada kiirust ja valida võimalikult ohutu trajektoor","Kiirendada takistuse suunas","Vaadata ainult peeglisse"],0,"Takistusele reageerimisel tuleb säilitada kontroll ja vältida paanikat."],
+["Miks tuleb mootorrattaga külgtuulega arvestada?",["Tuul võib mõjutada sõidutrajektoori, eriti avatud teel","Tuul ei mõjuta mootorratast","Tuul suurendab alati stabiilsust"],0,"Külgtuul võib mootorratast külgsuunas nihutada."],
+["Mida teha enne ristmikule jõudmist, kui nähtavus on piiratud?",["Vähendada kiirust ja olla valmis peatuma","Kiirendada","Sõita vastassuunavööndisse"],0,"Piiratud nähtavus nõuab ettevaatlikumat lähenemist."],
+["Miks peab mootorrattur olema eriti tähelepanelik sõidukite pöördeid jälgides?",["Mootorratas võib jääda teise juhi vaateväljast välja","Mootorrattad ei tohi ristmikel pöörata","Sõiduautod ei kasuta suunamärguandeid"],0,"Mootorratta väiksem siluett võib muuta selle märkamise raskemaks."],
+["Kas mootorrattaga võib sõita kiiremini kui kehtiv suurim lubatud kiirus?",["Ei","Jah, kui tee on tühi","Jah, kui mootorratas on võimas"],0,"Suurim lubatud kiirus on õiguslik ülempiir."],
+["Mida tähendab liiklusmärgi all olev lisatahvel?",["See võib täpsustada põhimärgi kehtivust või mõju","See muudab kõik märgid kehtetuks","See on alati parkimismärk"],0,"Lisatahvlid täpsustavad liiklusmärgi tähendust."],
+["Millal peab mootorrattaga sõidusuunda muutmisel suunamärguande andma?",["Enne manöövrit piisavalt aegsasti","Alles pärast pööramist","Ainult maanteel"],0,"Suunamärguanne peab andma teistele liiklejatele piisavalt infot."],
+["Mida teha, kui mootorrattur tunneb sõidu ajal tugevat väsimust?",["Peatada ohutus kohas ja puhata","Sõita kiiremini","Avada visiir ja jätkata alati"],0,"Väsimus halvendab reaktsioonikiirust ja otsustusvõimet."],
+["Miks on nähtavus mootorratturi jaoks oluline?",["Teised liiklejad peavad mootorratturit õigel ajal märkama ning mootorrattur peab ise ohtu nägema","Nähtavus pole oluline","Ainult öösel"],0,"Mootorratturi väike siluett muudab märgatavuse eriti oluliseks."],
+["Mida teha, kui tee ääres on palju liiva või kruusa?",["Vähendada kiirust ja vältida järske juhtimisliigutusi","Kiirendada","Pidurdada järsult keset lahtist kruusa"],0,"Lahtine materjal võib vähendada rataste haarduvust."],
+["Kas mootorrattaga tohib sõita sõidukite vahel viisil, mis rikub sõiduradade või ohutuse nõudeid?",["Ei","Jah, kui mootorratas mahub","Alati võib"],0,"Sõiduki mõõt ei anna õigust liiklusreegleid eirata."],
+["Mida tähendab ohutu sõidukiirus mootorrattal?",["Kiirus, millega suudad arvestades olukorda sõiduki kontrolli all hoida ja peatuda","Alati suurim lubatud kiirus","Alati 30 km/h"],0,"Ohutu kiirus sõltub tee-, ilma-, nähtavus- ja liiklusoludest."],
+["Miks tuleb pärast sõitu kontrollida mootorratta seisukorda, kui sõidul tekkis ebatavaline heli?",["Rike võib mõjutada järgmist sõitu ja ohutust","Heli pole kunagi oluline","Piisab mootori pesemisest"],0,"Ebatavaline heli võib viidata tehnilisele probleemile."],
+["Mida teha, kui teel olev auto hakkab ootamatult sinu sõidurajale kalduma?",["Vähendada kiirust ja vajadusel vältida kokkupõrget ohutu manöövriga","Kiirendada talle vastu","Sõita tema pimenurka"],0,"Esmane eesmärk on kokkupõrget vältida ja säilitada kontroll."]
+],
+B: [
+["Mis on B-kategooria sõiduki juhil kõige olulisem enne sõidu alustamist?",["Veenduda sõiduki korrasolekus, istme ja peeglite õiges seadistuses ning turvavöö kasutamises","Kontrollida ainult raadiot","Kontrollida ainult kütust"],0,"Enne sõitu tuleb tagada nii sõiduki kui juhi valmisolek."],
+["Mis on asulasisesel teel üldine suurim lubatud sõidukiirus, kui liikluskorraldusvahend ei sätesta teisiti?",["30 km/h","50 km/h","90 km/h"],1,"Liiklusseaduse üldreegli järgi on asulasisesel teel suurim lubatud kiirus 50 km/h."],
+["Mis on asulavälisel teel üldine suurim lubatud sõidukiirus, kui liikluskorraldusvahend ei sätesta teisiti?",["50 km/h","70 km/h","90 km/h"],2,"Liiklusseaduse üldreegli järgi on asulavälisel teel suurim lubatud kiirus 90 km/h."],
+["Mida peab juht tegema, kui nähtavus on halb?",["Kohandama kiiruse nii, et sõidukit oleks võimalik nähtavuse piires ohutult peatada","Sõitma alati suurima lubatud kiirusega","Lülitama tuled välja"],0,"Kiirus peab vastama nähtavusele ja muudele teeoludele."],
+["Kuidas tuleb läheneda reguleerimata ülekäigurajale?",["Vähendada kiirust ja olla valmis jalakäijale teed andma","Kiirendada","Sõita alati vasakult mööda"],0,"Ülekäiguraja juures tuleb jalakäijate suhtes olla eriti tähelepanelik."],
+["Mida tähendab „Anna teed“ märk?",["Juht peab andma teed sõidukile või liiklejale, kellel on eesõigus","Juht peab alati peatuma","Juht saab alati eesõiguse"],0,"Peatumine pole alati vajalik, kui tee andmiseks on olukord piisavalt selge."],
+["Mida tähendab „Peatumine keelatud“?",["Sõiduki peatamine on märgi kehtivusalas keelatud, välja arvatud seaduses ette nähtud erandid","Parkimine on lubatud","Keelatud on ainult öine peatumine"],0,"Peatumise keeld hõlmab ka parkimist."],
+["Mida tähendab „Parkimine keelatud“?",["Parkimine on keelatud, kuid lühiajaline peatumine võib olla lubatud, kui muud reeglid seda ei keela","Peatumine on alati keelatud","Keelatud on ainult tagurdamine"],0,"Parkimise ja peatumise tähendused erinevad."],
+["Kuidas tuleb ristmikul vasakpööret sooritades vastutuleva sõidukiga kohtudes üldjuhul mööduda?",["Vasakule pööravad sõidukid võivad teineteisest mööduda vasakult, olles eriti tähelepanelikud","Alati paremalt","Ainult kõnniteelt"],0,"Liiklusseadus näeb vastastikku vasakule pööravatele juhtidele ette erisuse."],
+["Mida peab juht tegema enne reavahetust?",["Kontrollima liiklusolukorda, pimenurka ja andma suunamärguande","Keerama kohe","Pidurdama alati järsult"],0,"Reavahetus peab olema teistele liiklejatele etteaimatav ja ohutu."],
+["Millal on möödasõit keelatud või ohtlik?",["Kui manöövrit ei saa nähtavuse, tee või liikluse tõttu ohutult lõpetada","Kui auto on puhas","Ainult siis, kui sajab"],0,"Möödasõit peab olema kogu ulatuses ohutu ja reeglitega lubatud."],
+["Mida tähendab ohutu pikivahe?",["Piisav vahe, et ootamatu olukorra korral jõuaksid ohutult reageerida ja peatuda","Alati täpselt 2 meetrit","Ainult foori taga olev vahe"],0,"Pikivahe sõltub kiirusest ja teeoludest."],
+["Miks on talvel pidurdusteekond sageli pikem?",["Haarduvus võib olla väiksem ning tee libedam","Mootor töötab alati kiiremini","Rehvid muutuvad pikemaks"],0,"Libedus vähendab rehvide haarduvust."],
+["Mida teha, kui ees sõitev sõiduk pidurdab ootamatult?",["Pidurdada kontrollitult ja säilitada võimalikult ohutu pikivahe","Kiirendada talle järele","Sõita kohe vastassuunavööndisse"],0,"Pikivahe annab ootamatu pidurduse korral reageerimiseks ruumi."],
+["Mida tähendab parema käe reegel?",["Kui eesõigus pole muul viisil määratud, tuleb teatud ristmikul anda teed paremalt lähenevale sõidukile","Alati tuleb anda teed vasakule","See kehtib ainult maanteel"],0,"Reegel rakendub olukordades, kus eesõigust ei ole muul viisil määratud."],
+["Kas roheline foorituli annab juhile õiguse ristmikule sõita, kui ta jääks ristmiku keskele liiklust takistama?",["Ei","Jah","Ainult öösel"],0,"Ristmikule ei tohi sõita, kui seda läbides jääksid liiklust takistavalt ristmikule."],
+["Mida teha kollase fooritule süttimisel?",["Peatuda, kui seda saab teha ohutult","Alati kiirendada","Alati tagurdada"],0,"Kollane tuli tähendab peatumise vajadust, kui ohutu peatumine on võimalik."],
+["Mida peab tegema alarmsõiduki lähenemisel?",["Andma talle ohutu liikumisvõimaluse ja vajadusel peatuma","Sõitma talle ette","Sõitma alati tema järel"],0,"Alarmsõidukile tuleb tagada ohutu ja takistusteta liikumine."],
+["Kas turvavöö kasutamine on sõiduautos oluline ka lühikese sõidu puhul?",["Jah","Ei","Ainult maanteel"],0,"Turvavöö vähendab vigastuste riski ka lühikesel sõidul."],
+["Mida peab juht tegema, kui tunneb sõidu ajal tugevat väsimust?",["Peatuma ohutus kohas ja puhkama","Avama akna ja alati edasi sõitma","Sõitma kiiremini"],0,"Väsimus vähendab tähelepanu ja reaktsioonikiirust."],
+["Kas juht tohib juhtimise ajal käes hoida telefoni?",["Üldjuhul ei","Jah, kui räägitakse lühidalt","Jah, kui sõidetakse aeglaselt"],0,"Juht peab vältima telefoni käes hoidmist ja juhtimiselt tähelepanu viimist."],
+["Mida teha enne tagurdamist?",["Veenduda, et tagurdamine on ohutu ja keegi ei jää sõiduki taha","Tagurdada kohe","Vaadata ainult vasakusse peeglisse"],0,"Tagurdamisel peab juht veenduma manöövri ohutuses."],
+["Kuidas tuleb sõiduki ust avada liikluse poolel?",["Veendudes enne, et ukse avamine ei ohusta teisi liiklejaid","Avada alati kiiresti","Avada ainult siis, kui mootor töötab"],0,"Ukse avamisel tuleb arvestada mööduvate jalgratturite ja sõidukitega."],
+["Mida tähendab möödumine?",["Ees liikuvast sõidukist ettejõudmist oma sõidurajalt välja sõitmata","Alati vastassuunavööndisse sõitmist","Ainult parkivast autost möödumist"],0,"Möödumine erineb möödasõidust selle poolest, et oma sõidurajalt välja ei sõideta."],
+["Millal võib kasutada kaugtulesid?",["Kui see ei pimesta ega häiri teisi liiklejaid ning tingimused seda lubavad","Alati asulas","Ainult parklas"],0,"Kaugtulesid ei tohi kasutada viisil, mis teisi liiklejaid pimestab."],
+["Mida teha, kui vastutuleva sõiduki tuled pimestavad?",["Vähendada kiirust ja suunata pilk tee paremale servale, vältides otsest valgusesse vaatamist","Kiirendada","Lülitada enda tuled välja ja jätkata"],0,"Pimestamise korral tuleb vähendada ohtu ja säilitada sõidutrajektoor."],
+["Mida peab juht tegema, kui tee on vihmast märg?",["Kohandama kiirust ja suurendama vajadusel pikivahet","Sõitma alati sama kiirusega","Pidurdama pidevalt"],0,"Märg tee võib vähendada haarduvust ja suurendada pidurdusteekonda."],
+["Mida tähendab sõiduki valmistajakiirus?",["Sõiduki valmistaja määratud suurim konstruktsioonist tulenev kiirus","Alati liiklusmärgil näidatud kiirus","Juhi soovitud kiirus"],0,"Sõidukiga ei tohi ületada selle valmistajakiirust."],
+["Miks ei tohi põhjendamatult aeglase sõiduga teisi takistada?",["See võib häirida liiklusvoogu ja tekitada ohtlikke möödasõite","Aeglane sõit on alati keelatud","Sest kõik peavad sõitma 90 km/h"],0,"Juht ei tohi põhjendamatult aeglase sõiduga teisi liiklejaid takistada."],
+["Mida peab juht tegema liiklusõnnetuse korral, kui on kannatanuid?",["Peatuma, tagama ohutuse, andma abi vastavalt võimalustele ja kutsuma vajadusel abi","Sõitma sündmuskohalt minema","Ainult pildistama"],0,"Õnnetuse korral tuleb tegutseda ohutult ning kannatanuid aidata ja abi kutsuda."]
+]};
+
+let category="AM", questions=[], current=0, answers=[], endTime=0, timerId=null, finished=false;
+
+const $=id=>document.getElementById(id);
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    category=btn.dataset.cat;
+    $("categoryText").textContent={
+      AM:"AM-kategooria test keskendub mopeedi, liiklusohutuse ja üldiste liiklusreeglite teemadele.",
+      A:"A-kategooria test keskendub mootorratta juhtimisele, ohutusele ja üldistele liiklusreeglitele.",
+      B:"B-kategooria test keskendub sõiduauto juhtimisele, liiklusohutusele ja üldistele liiklusreeglitele."
+    }[category];
+  });
+});
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+function start(){
+  questions=shuffle(tests[category]);
+  current=0; answers=new Array(questions.length).fill(null); finished=false;
+  endTime=Date.now()+30*60*1000;
+  $("home").classList.add("hidden"); $("result").classList.add("hidden"); $("test").classList.remove("hidden");
+  timerId=setInterval(updateTimer,250); render();
+}
+function updateTimer(){
+  const left=Math.max(0,endTime-Date.now());
+  const sec=Math.ceil(left/1000);
+  const m=String(Math.floor(sec/60)).padStart(2,"0"), s=String(sec%60).padStart(2,"0");
+  $("timer").textContent=`${m}:${s}`;
+  if(left<=0){finish(true)}
+}
+function render(){
+  const q=questions[current];
+  $("qnum").textContent=`Küsimus ${current+1} / ${questions.length}`;
+  $("question").textContent=q[0];
+  $("progress").style.width=((current+1)/questions.length*100)+"%";
+  $("answers").innerHTML="";
+  q[1].forEach((text,i)=>{
+    const b=document.createElement("button");
+    b.className="answer"+(answers[current]===i?" selected":"");
+    b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}.</span><span>${text}</span>`;
+    b.onclick=()=>{if(finished)return; answers[current]=i; render()};
+    $("answers").appendChild(b);
+  });
+  $("explanation").classList.add("hidden");
+  $("prevBtn").disabled=current===0;
+  $("nextBtn").textContent=current===questions.length-1?"Lõpeta test":"Järgmine";
+}
+$("prevBtn").onclick=()=>{if(current>0){current--;render()}};
+$("nextBtn").onclick=()=>{if(current<questions.length-1){current++;render()}else finish(false)};
+$("quitBtn").onclick=()=>{if(confirm("Kas soovid testi katkestada? Vastused lähevad kaotsi.")){finish(false)}};
+$("startBtn").onclick=start;
+$("againBtn").onclick=()=>{ $("result").classList.add("hidden"); $("home").classList.remove("hidden") };
+
+function finish(timeUp){
+  if(finished)return; finished=true; clearInterval(timerId);
+  let correct=0;
+  questions.forEach((q,i)=>{if(answers[i]===q[2])correct++});
+  const wrong=answers.filter((a,i)=>a!==null && a!==questions[i][2]).length;
+  const blank=answers.filter(a=>a===null).length;
+  const percent=Math.round(correct/questions.length*100);
+  $("test").classList.add("hidden"); $("result").classList.remove("hidden");
+  $("score").textContent=`${correct} / ${questions.length}`;
+  $("correctCount").textContent=correct; $("wrongCount").textContent=wrong; $("blankCount").textContent=blank;
+  $("resultText").innerHTML=timeUp
+    ? `<p>Aeg sai läbi. Vastamata küsimused loeti tulemuseta.</p><p><strong>Tulemus: ${percent}%</strong></p>`
+    : `<p><strong>Tulemus: ${percent}%</strong></p>`;
+  $("result").className="card result "+(percent>=80?"good":"bad");
+  $("review").innerHTML="<h3>Vastuste ülevaade</h3>"+questions.map((q,i)=>{
+    const ok=answers[i]===q[2];
+    const chosen=answers[i]===null?"Vastamata":q[1][answers[i]];
+    return `<div class="review-item"><strong>${i+1}. ${q[0]}</strong>
+      <div>Valitud: <b>${chosen}</b></div>
+      <div>Õige vastus: <b>${q[1][q[2]]}</b></div>
+      <div>${q[3]}</div>
+      <div style="margin-top:7px;color:${ok?'var(--good)':'var(--bad)'}"><b>${ok?'Õige':'Vale'}</b></div>
+    </div>`;
+  }).join("");
+}
+</script>
+</body>
+</html>
