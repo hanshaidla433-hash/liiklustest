@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LiiklusEksami Harjutus</title>
+
+<style>
+:root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#718096;
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --success:#16a34a;
+    --danger:#dc2626;
+    --warning:#f59e0b;
+    --border:#e2e8f0;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+header{
+    background:#ffffff;
+    border-bottom:1px solid var(--border);
+    padding:15px 5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:800;
+    color:var(--primary);
+}
+
+.logo span{
+    color:#111827;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+button{
+    border:none;
+    border-radius:10px;
+    padding:12px 18px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-1px);
+}
+
+.primary{
+    background:var(--primary);
+    color:white;
+}
+
+.primary:hover{
+    background:var(--primary-dark);
+}
+
+.secondary{
+    background:#e8eefc;
+    color:var(--primary);
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:35px 20px;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:var(--muted);
+    font-size:18px;
+}
+
+.categories{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+}
+
+.category{
+    background:var(--card);
+    padding:25px;
+    border-radius:18px;
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.25s;
+}
+
+.category:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.category-icon{
+    font-size:42px;
+}
+
+.category h2{
+    margin:15px 0 8px;
+}
+
+.category p{
+    color:var(--muted);
+}
+
+.badge{
+    display:inline-block;
+    margin-top:15px;
+    padding:6px 10px;
+    background:#eef2ff;
+    color:#4338ca;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* TEST */
+
+.test-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.progress-bar{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.progress{
+    height:100%;
+    background:var(--primary);
+    width:0%;
+    transition:.3s;
+}
+
+.question-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:30px;
+    border:1px solid var(--border);
+}
+
+.question-number{
+    color:var(--primary);
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.question{
+    font-size:23px;
+    font-weight:700;
+    margin-bottom:25px;
+    line-height:1.4;
+}
+
+.traffic-image{
+    width:100%;
+    max-width:600px;
+    height:250px;
+    margin:20px auto;
+    background:#dbeafe;
+    border-radius:15px;
+    position:relative;
+    overflow:hidden;
+}
+
+/* Lihtne tee skeem */
+.road{
+    position:absolute;
+    background:#4b5563;
+}
+
+.horizontal-road{
+    width:100%;
+    height:90px;
+    top:80px;
+}
+
+.vertical-road{
+    width:100px;
+    height:100%;
+    left:250px;
+}
+
+.car{
+    position:absolute;
+    width:55px;
+    height:30px;
+    border-radius:7px;
+    background:#2563eb;
+}
+
+.car.red{
+    background:#dc2626;
+}
+
+.car.yellow{
+    background:#f59e0b;
+}
+
+.car.one{
+    top:110px;
+    left:100px;
+}
+
+.car.two{
+    top:30px;
+    left:275px;
+}
+
+.car.three{
+    top:110px;
+    right:90px;
+}
+
+.answers{
+    display:grid;
+    gap:12px;
+    margin-top:25px;
+}
+
+.answer{
+    width:100%;
+    text-align:left;
+    padding:17px;
+    background:#f8fafc;
+    border:2px solid var(--border);
+    color:var(--text);
+}
+
+.answer:hover{
+    border-color:var(--primary);
+    background:#eff6ff;
+}
+
+.answer.selected{
+    border-color:var(--primary);
+    background:#dbeafe;
+}
+
+.answer.correct{
+    border-color:var(--success);
+    background:#dcfce7;
+}
+
+.answer.wrong{
+    border-color:var(--danger);
+    background:#fee2e2;
+}
+
+.test-buttons{
+    display:flex;
+    justify-content:space-between;
+    margin-top:25px;
+}
+
+.timer{
+    background:#111827;
+    color:white;
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+/* TULEMUSED */
+
+.result-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:35px;
+    text-align:center;
+    border:1px solid var(--border);
+}
+
+.score{
+    font-size:70px;
+    font-weight:900;
+    color:var(--primary);
+}
+
+.result-details{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+    margin-top:25px;
+}
+
+.stat{
+    background:#f8fafc;
+    padding:20px;
+    border-radius:14px;
+}
+
+.stat strong{
+    font-size:25px;
+}
+
+.review{
+    margin-top:30px;
+    text-align:left;
+}
+
+.review-item{
+    background:#fff;
+    border:1px solid var(--border);
+    padding:20px;
+    margin-bottom:15px;
+    border-radius:14px;
+}
+
+.explanation{
+    background:#eff6ff;
+    padding:12px;
+    border-radius:8px;
+    margin-top:10px;
+    color:#1e40af;
+}
+
+/* PREMIUM */
+
+.premium-box{
+    margin-top:35px;
+    background:linear-gradient(135deg,#312e81,#7c3aed);
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+.hidden{
+    display:none !important;
+}
+
+footer{
+    text-align:center;
+    color:var(--muted);
+    padding:40px 20px;
+}
+
+@media(max-width:600px){
+
+    .hero h1{
+        font-size:30px;
+    }
+
+    .question-card{
+        padding:20px;
+    }
+
+    .question{
+        font-size:19px;
+    }
+
+    .test-header{
+        gap:10px;
+    }
+
+    .traffic-image{
+        height:220px;
+    }
+
+    .vertical-road{
+        left:calc(50% - 50px);
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+🚦 Liiklus<span>Õpe</span>
+</div>
+
+<div class="nav-right">
+<button class="secondary" onclick="goHome()">Avaleht</button>
+<button class="primary" onclick="showLogin()">Logi sisse</button>
+</div>
+
+</header>
+
+<main class="container">
+
+<!-- AVALEHT -->
+
+<section id="home">
+
+<div class="hero">
+
+<h1>Harjuta liikluseksamiks 🚗</h1>
+
+<p>
+Õpi liiklusreegleid, lahenda realistlikke küsimusi ja valmistu eksamiks.
+</p>
+
+</div>
+
+<div class="categories">
+
+<div class="category" onclick="startCategory('AM')">
+<div class="category-icon">🛵</div>
+<h2>AM-kategooria</h2>
+<p>Mopeedi ja kerge mootorsõiduki juhiloa harjutamine.</p>
+<span class="badge">30 küsimust</span>
+</div>
+
+<div class="category" onclick="startCategory('A')">
+<div class="category-icon">🏍️</div>
+<h2>A-kategooria</h2>
+<p>Mootorratta juhiloa liiklustestid.</p>
+<span class="badge">30 küsimust</span>
+</div>
+
+<div class="category" onclick="startCategory('B')">
+<div class="category-icon">🚗</div>
+<h2>B-kategooria</h2>
+<p>Sõiduauto juhiloa teooria harjutamine.</p>
+<span class="badge">30 küsimust</span>
+</div>
+
+<div class="category" onclick="startCategory('C')">
+<div class="category-icon">🚛</div>
+<h2>C-kategooria</h2>
+<p>Veoauto juhiloa küsimused ja liiklusolukorrad.</p>
+<span class="badge">30 küsimust</span>
+</div>
+
+</div>
+
+<div class="premium-box">
+
+<h2>⭐ LiiklusÕpe Premium</h2>
+
+<p>
+Tulevikus saad Premiumiga piiramatult teste, põhjalikku statistikat,
+raskemaid küsimusi ja rohkem eksamisimulatsioone.
+</p>
+
+<button onclick="alert('Premium süsteem lisatakse hiljem Supabase + maksete süsteemiga.')">
+Vaata Premiumi
+</button>
+
+</div>
+
+</section>
+
+<!-- TEST -->
+
+<section id="test" class="hidden">
+
+<div class="test-header">
+
+<div>
+<strong id="categoryTitle"></strong><br>
+<span id="questionCounter"></span>
+</div>
+
+<div class="timer">
+⏱ <span id="timer">30:00</span>
+</div>
+
+</div>
+
+<div class="progress-bar">
+<div class="progress" id="progress"></div>
+</div>
+
+<div class="question-card">
+
+<div class="question-number" id="questionNumber"></div>
+
+<div class="question" id="questionText"></div>
+
+<div id="imageContainer"></div>
+
+<div class="answers" id="answers"></div>
+
+<div class="test-buttons">
+
+<button class="secondary" onclick="previousQuestion()">
+← Eelmine
+</button>
+
+<button class="primary" onclick="nextQuestion()">
+Järgmine →
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- TULEMUSED -->
+
+<section id="results" class="hidden">
+
+<div class="result-card">
+
+<h1>Test lõpetatud! 🎉</h1>
+
+<div class="score" id="score"></div>
+
+<p id="resultMessage"></p>
+
+<div class="result-details">
+
+<div class="stat">
+Õigeid<br>
+<strong id="correctCount"></strong>
+</div>
+
+<div class="stat">
+Valesid<br>
+<strong id="wrongCount"></strong>
+</div>
+
+<div class="stat">
+Tulemus<br>
+<strong id="percentage"></strong>
+</div>
+
+</div>
+
+<br>
+
+<button class="primary" onclick="goHome()">
+Tee uus test
+</button>
+
+<div class="review" id="review"></div>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+© 2026 LiiklusÕpe – õppimiseks loodud liiklustestid
+</footer>
+
+<script>
+
+/* ==========================================
+   KÜSIMUSTE ANDMEBAAS
+========================================== */
+
+const questions = {
+
+AM:[
+
+{
+question:"Mida tähendab punane foorituli?",
+answers:["Võid sõita ettevaatlikult","Pead peatuma","Võid sõita ainult paremale"],
+correct:1,
+explanation:"Punane foorituli tähendab peatumiskohustust."
+},
+
+{
+question:"Millal peab mopeedijuht kasutama kaitsekiivrit?",
+answers:["Ainult maanteel","Sõitmise ajal","Ainult pimedal ajal"],
+correct:1,
+explanation:"Mopeediga sõites tuleb kasutada nõuetekohast kaitsekiivrit."
+},
+
+{
+question:"Mida tuleb teha enne sõidu alustamist?",
+answers:["Kontrollida sõiduki tehnilist seisukorda","Kohe täiskiirusel sõitma hakata","Lülitada sisse ainult raadio"],
+correct:0,
+explanation:"Enne sõitu tuleb veenduda, et sõiduk on liiklemiseks ohutu."
+},
+
+{
+question:"Milline on ohutu sõidustiil?",
+answers:["Hoida piisavat pikivahet","Sõita võimalikult lähedal eessõitjale","Pidurdada järsult igas olukorras"],
+correct:0,
+explanation:"Piisav pikivahe annab rohkem aega reageerimiseks."
+},
+
+{
+question:"Mida tähendab liiklusmärk STOP?",
+answers:["Anna teed ainult siis, kui näed autot","Peatu täielikult","Vähenda veidi kiirust"],
+correct:1,
+explanation:"STOP-märgi juures tuleb sõiduk täielikult peatada."
+},
+
+{
+question:"Millal tuleb kasutada suunatuld?",
+answers:["Enne suuna või sõiduraja muutmist","Ainult parklas","Ainult siis, kui keegi sind näeb"],
+correct:0,
+explanation:"Suunatuli annab teistele liiklejatele teada sinu kavatsusest."
+},
+
+{
+question:"Miks on märg tee ohtlikum?",
+answers:["Rehvide haardumine võib olla väiksem","Auto muutub automaatselt kiiremaks","Pidurid ei tööta üldse"],
+correct:0,
+explanation:"Märjal teel võib haardumine olla väiksem ja pidurdusteekond pikeneda."
+},
+
+{
+question:"Mida peaksid tegema, kui jalakäija ootab ülekäiguraja ääres?",
+answers:["Suurendama kiirust","Olema valmis peatuma ja andma teed","Andma signaali ja sõitma edasi"],
+correct:1,
+explanation:"Juht peab arvestama jalakäijatega ja vajadusel neile teed andma."
+},
+
+{
+question:"Mida mõjutab liiga suur kiirus?",
+answers:["Reageerimis- ja pidurdusteekonda","Ainult kütusekulu","Ainult mootori heli"],
+correct:0,
+explanation:"Suurem kiirus suurendab õnnetuse riski ja pikendab peatumiseks vajalikku teekonda."
+},
+
+{
+question:"Kas telefoni käes hoidmine sõidu ajal on ohutu?",
+answers:["Jah, kui sõidan aeglaselt","Ei, see hajutab tähelepanu","Jah, kui tee on tühi"],
+correct:1,
+explanation:"Tähelepanu peab olema liiklusel."
+},
+
+{
+question:"Mida tuleb teha enne vasakpööret?",
+answers:["Kontrollida liiklust ja anda vajadusel teed","Kohe pöörata","Vaadata ainult ette"],
+correct:0,
+explanation:"Enne manöövrit tuleb veenduda selle ohutuses."
+},
+
+{
+question:"Mis on peamine põhjus pikivahe hoidmiseks?",
+answers:["Et jõuaks reageerida ootamatule pidurdamisele","Et teised ei saaks mööduda","Et sõita kiiremini"],
+correct:0,
+explanation:"Piisav pikivahe võimaldab ohutult reageerida."
+}
+
+],
+
+A:[
+
+{
+question:"Miks on mootorrattal kurvis oluline valida sobiv kiirus enne kurvi?",
+answers:["Kurvis on alati lubatud kiirendada","Liiga suur kiirus võib vähendada võimalust kurvi ohutult läbida","Kiirus ei mõjuta mootorratta juhitavust"],
+correct:1,
+explanation:"Kurvi sisenemisel liiga suur kiirus võib põhjustada juhitavuse ja haardumise kaotuse."
+},
+
+{
+question:"Mida peaks mootorrattur enne möödasõitu kontrollima?",
+answers:["Ainult seda, kas ees olev sõiduk liigub aeglaselt","Tahavaadet, vastassuunda ja manöövri ohutust","Ainult mootori pöördeid"],
+correct:1,
+explanation:"Möödasõit eeldab liiklusolukorra põhjalikku kontrollimist."
+},
+
+{
+question:"Miks võib teekattemärgistus olla mootorrattale märja ilmaga libe?",
+answers:["Värvitud pind võib pakkuda vähem haardumist","See muudab mootori nõrgemaks","See vähendab kütusekulu"],
+correct:0,
+explanation:"Märjad värvitud pinnad võivad olla libedamad."
+},
+
+{
+question:"Mida tuleks teha enne järsku pidurdamist?",
+answers:["Võimalusel hoida mootorratas võimalikult sirges asendis","Kallutada mootorratas maksimaalselt","Sulgeda silmad"],
+correct:0,
+explanation:"Pidurdamine on üldiselt stabiilsem, kui mootorratas on sirgemas asendis."
+},
+
+{
+question:"Miks on mootorrattur teistele liiklejatele raskemini märgatav?",
+answers:["Mootorratas on sageli väiksem ja võib jääda pimenurka","Mootorrattal puuduvad tuled","Mootorratas liigub alati liiga aeglaselt"],
+correct:0,
+explanation:"Väiksem sõiduk võib olla teiste juhtide jaoks raskemini märgatav."
+},
+
+{
+question:"Mida tähendab kaitsev sõidustiil?",
+answers:["Eeldad, et kõik teised teevad alati õigesti","Arvestad teiste võimalike vigadega","Sõidad võimalikult agressiivselt"],
+correct:1,
+explanation:"Kaitsev sõidustiil tähendab riskide ennetamist."
+},
+
+{
+question:"Mida tuleks teha, kui teel on kruusa?",
+answers:["Suurendada järsult kiirust","Vähendada kiirust ja vältida järske manöövreid","Pidurdada ainult esipiduriga maksimaalselt"],
+correct:1,
+explanation:"Kruus võib vähendada haardumist ja põhjustada libisemist."
+},
+
+{
+question:"Miks tuleb enne sõitu kontrollida rehve?",
+answers:["Rehvide seisukord mõjutab juhitavust ja haardumist","Ainult välimuse pärast","Rehvid ei mõjuta pidurdamist"],
+correct:0,
+explanation:"Rehvid on sõiduki kontakt teepinnaga."
+},
+
+{
+question:"Mida peaks tegema tugeva külgtuule korral?",
+answers:["Hoida kindlat juhitavust ja arvestada tuule mõjuga","Lasta juhtrauast lahti","Sõita võimalikult tee servas"],
+correct:0,
+explanation:"Tuul võib muuta mootorratta trajektoori."
+},
+
+{
+question:"Millal on mootorratturi pidurdusteekond tavaliselt pikem?",
+answers:["Libedal või märjal teel","Täiesti kuival teel alati","Kui sõiduk seisab"],
+correct:0,
+explanation:"Halvem haardumine pikendab peatumiseks vajalikku teekonda."
+}
+
+],
+
+B:[
+
+{
+question:"Sõidad asulas ja eespool võib ootamatult teele astuda jalakäija. Kuidas peaksid sõitma?",
+answers:["Valima kiiruse, mis võimaldab vajadusel peatuda","Suurendama kiirust, et kiiresti mööduda","Sõitma võimalikult lähedal tee äärele"],
+correct:0,
+explanation:"Juht peab valima kiiruse vastavalt nähtavusele ja võimalikele ohtudele."
+},
+
+{
+question:"Mida tuleb teha enne sõiduraja vahetamist?",
+answers:["Kontrollida peegleid ja pimenurka ning anda suunamärguanne","Kohe rooli keerata","Vaadata ainult tahavaatepeeglisse"],
+correct:0,
+explanation:"Sõiduraja vahetamine on manööver ning selle ohutuses tuleb veenduda."
+},
+
+{
+question:"Miks on oluline hoida pikivahet?",
+answers:["See annab aega reageerida","See muudab auto väiksemaks","See vähendab nähtavust"],
+correct:0,
+explanation:"Piisav pikivahe aitab vältida tagant otsasõitu."
+},
+
+{
+question:"Mida tähendab kollane foorituli?",
+answers:["Kiirenda","Ole valmis peatuma, kui seda saab ohutult teha","Peatu alati koheselt keset ristmikku"],
+correct:1,
+explanation:"Kollane tuli hoiatab fooritsükli muutumisest ja juht peab võimalusel peatuma."
+},
+
+{
+question:"Millal võib tekkida vesiliu oht?",
+answers:["Kui rehvid kaotavad suurel kiirusel kontakti veekihiga teel","Ainult talvel","Ainult siis, kui auto seisab"],
+correct:0,
+explanation:"Vesiliug võib tekkida märjal teel, eriti suurema kiiruse ja kulunud rehvide korral."
+},
+
+{
+question:"Mida tuleb teha, kui lähened ülekäigurajale ja nähtavus on piiratud?",
+answers:["Vähendada kiirust ja olla valmis peatuma","Suurendada kiirust","Vaadata ainult tahavaatepeeglisse"],
+correct:0,
+explanation:"Piiratud nähtavuse korral tuleb valida ohutu kiirus."
+},
+
+{
+question:"Mida tähendab pimeala?",
+answers:["Ala, mida juht ei näe peeglitest","Tee, kus puuduvad tänavalambid","Auto salongi tagaosa"],
+correct:0,
+explanation:"Pimeala on piirkond, mida peeglid ei pruugi katta."
+},
+
+{
+question:"Miks ei tohiks juht sõita väsinuna?",
+answers:["Reaktsioon võib aeglustuda ja tähelepanu väheneda","Auto muutub raskemaks","Kütusekulu suureneb alati"],
+correct:0,
+explanation:"Väsimus võib oluliselt vähendada juhi tähelepanu ja reaktsioonivõimet."
+},
+
+{
+question:"Mida tuleb teha enne tagurdamist?",
+answers:["Veenduda, et manööver on ohutu","Alati kohe gaasi anda","Vaadata ainult ette"],
+correct:0,
+explanation:"Tagurdamisel peab juht veenduma, et ta ei ohusta teisi."
+},
+
+{
+question:"Milline tegevus aitab vähendada libedal teel õnnetuse riski?",
+answers:["Rahulik kiirus ja sujuvad manöövrid","Järsud rooliliigutused","Võimalikult hiline pidurdamine"],
+correct:0,
+explanation:"Libedal teel tuleb vältida järske kiirendusi, pidurdamist ja roolimist."
+},
+
+{
+question:"Millal tuleb kasutada suunatuld?",
+answers:["Kui kavatsed muuta suunda või sooritada manöövrit","Ainult enne parkimist","Ainult maanteel"],
+correct:0,
+explanation:"Suunamärguanne annab teistele liiklejatele infot sinu kavatsusest."
+},
+
+{
+question:"Mida peaks juht tegema, kui kiirabi läheneb vilkurite ja helisignaaliga?",
+answers:["Võimalusel anda teed ja mitte takistada sõiduki liikumist","Jätkata samas tempos ja mitte reageerida","Sõita kiirabi järel võimalikult lähedal"],
+correct:0,
+explanation:"Eriolukorras sõidukile tuleb võimalusel tee vabastada."
+},
+
+{
+question:"Mida tuleb teha enne ristmikule sõitmist?",
+answers:["Hinnata liiklusolukorda ja järgida liikluskorraldust","Sulgeda silmad hetkeks","Kiirendada maksimaalselt"],
+correct:0,
+explanation:"Ristmikule lähenedes tuleb jälgida märke, foori ja teisi liiklejaid."
+}
+
+],
+
+C:[
+
+{
+question:"Miks vajab veoauto tavaliselt suuremat pikivahet?",
+answers:["Suurema massi tõttu võib peatumiseks kuluda rohkem aega ja ruumi","Veoauto pidurid ei tööta","Veoauto ei tohi kunagi pidurdada"],
+correct:0,
+explanation:"Suurema massiga sõiduk vajab sageli rohkem ruumi ohutuks pidurdamiseks."
+},
+
+{
+question:"Mida tuleb arvestada suure sõiduki pööramisel?",
+answers:["Sõiduki pöörderaadius võib olla suurem","Veoauto pöörab alati nagu sõiduauto","Suurus ei mõjuta pööramist"],
+correct:0,
+explanation:"Veoauto vajab pööramisel rohkem ruumi."
+},
+
+{
+question:"Miks tuleb kontrollida koorma kinnitust?",
+answers:["Et vältida koorma liikumist või kukkumist","Ainult selleks, et auto näeks parem välja","Koorem ei saa kunagi liikuda"],
+correct:0,
+explanation:"Halvasti kinnitatud koorem võib põhjustada ohtliku olukorra."
+},
+
+{
+question:"Mida mõjutab raske koorem pidurdamisel?",
+answers:["Sõiduki peatumiseks vajalikku vahemaad","Ainult raadio helitugevust","Sõiduki värvi"],
+correct:0,
+explanation:"Suurem mass mõjutab sõiduki liikumist ja pidurdamist."
+},
+
+{
+question:"Mida tuleb teha enne kitsale teele sõitmist suure sõidukiga?",
+answers:["Arvestada sõiduki mõõtmete ja võimalike takistustega","Sõita võimalikult kiiresti","Eeldada, et kõik mahuvad kõrvale"],
+correct:0,
+explanation:"Juht peab arvestama oma sõiduki laiuse ja kõrgusega."
+},
+
+{
+question:"Miks on veoautol suuremad pimenurgad?",
+answers:["Sõiduki mõõtmete tõttu ei pruugi juht kõiki alasid hästi näha","Veoautol puuduvad peeglid","Pimenurk tekib ainult öösel"],
+correct:0,
+explanation:"Suure sõiduki ümber võib olla alasid, mida juht ei näe."
+},
+
+{
+question:"Mida tuleks teha enne järsku allamäge sõitmist?",
+answers:["Valida sobiv kiirus ja vajadusel käik enne laskumist","Lülitada mootor välja","Kiirendada võimalikult palju"],
+correct:0,
+explanation:"Kiiruse kontrollimine enne laskumist aitab vältida pidurite liigset koormamist."
+},
+
+{
+question:"Mida tuleb arvestada külgtuulega?",
+answers:["Suur sõiduk võib tuulele rohkem reageerida","Tuul mõjutab ainult jalakäijaid","Külgtuul suurendab alati rehvide haardumist"],
+correct:0,
+explanation:"Külgtuul võib mõjutada suure sõiduki stabiilsust."
+}
+
+]
+
+};
+
+
+/* ==========================================
+   TESTI MUUTUJAD
+========================================== */
+
+let currentCategory="";
+let testQuestions=[];
+let currentQuestion=0;
+let userAnswers=[];
+let seconds=1800;
+let timerInterval;
+
+
+/* ==========================================
+   KÜSIMUSTE PALJUNDAMINE 30-NI
+   Hiljem lisa rohkem unikaalseid küsimusi.
+========================================== */
+
+function createThirtyQuestions(category){
+
+let base=[...questions[category]];
+
+let result=[];
+
+while(result.length<30){
+
+let shuffled=[...base].sort(()=>Math.random()-0.5);
+
+for(let q of shuffled){
+
+if(result.length<30){
+
+let newQuestion=JSON.parse(JSON.stringify(q));
+
+/* Segame vastusevariandid */
+let correctAnswer=newQuestion.answers[newQuestion.correct];
+
+newQuestion.answers.sort(()=>Math.random()-0.5);
+
+newQuestion.correct=newQuestion.answers.indexOf(correctAnswer);
+
+result.push(newQuestion);
+
+}
+
+}
+
+}
+
+return result;
+
+}
+
+
+/* ==========================================
+   ALUSTA TESTI
+========================================== */
+
+function startCategory(category){
+
+currentCategory=category;
+
+testQuestions=createThirtyQuestions(category);
+
+currentQuestion=0;
+
+userAnswers=new Array(testQuestions.length).fill(null);
+
+seconds=1800;
+
+document.getElementById("home").classList.add("hidden");
+
+document.getElementById("results").classList.add("hidden");
+
+document.getElementById("test").classList.remove("hidden");
+
+document.getElementById("categoryTitle").innerText=category+"-kategooria test";
+
+startTimer();
+
+showQuestion();
+
+}
+
+
+/* ==========================================
+   NÄITA KÜSIMUST
+========================================== */
+
+function showQuestion(){
+
+let q=testQuestions[currentQuestion];
+
+document.getElementById("questionCounter").innerText=
+"Küsimus "+(currentQuestion+1)+" / "+testQuestions.length;
+
+document.getElementById("questionNumber").innerText=
+"KÜSIMUS "+(currentQuestion+1);
+
+document.getElementById("questionText").innerText=q.question;
+
+document.getElementById("progress").style.width=
+((currentQuestion+1)/testQuestions.length*100)+"%";
+
+let answersDiv=document.getElementById("answers");
+
+answersDiv.innerHTML="";
+
+q.answers.forEach((answer,index)=>{
+
+let button=document.createElement("button");
+
+button.className="answer";
+
+button.innerText=String.fromCharCode(65+index)+". "+answer;
+
+if(userAnswers[currentQuestion]===index){
+
+button.classList.add("selected");
+
+}
+
+button.onclick=()=>selectAnswer(index);
+
+answersDiv.appendChild(button);
+
+});
+
+showTrafficImageIfNeeded();
+
+}
+
+
+/* ==========================================
+   PILTILINE LIIKLUSOLUKORD
+========================================== */
+
+function showTrafficImageIfNeeded(){
+
+let container=document.getElementById("imageContainer");
+
+container.innerHTML="";
+
+/* Iga 5. küsimus saab skeemi */
+
+if(currentQuestion%5===2){
+
+container.innerHTML=`
+
+<div class="traffic-image">
+
+<div class="road horizontal-road"></div>
+
+<div class="road vertical-road"></div>
+
+<div class="car one"></div>
+
+<div class="car red two"></div>
+
+<div class="car yellow three"></div>
+
+</div>
+
+<p style="text-align:center;color:#64748b;">
+Illustratiivne liiklusolukorra skeem
+</p>
+
+`;
+
+}
+
+}
+
+
+/* ==========================================
+   VASTUSE VALIMINE
+========================================== */
+
+function selectAnswer(index){
+
+userAnswers[currentQuestion]=index;
+
+showQuestion();
+
+}
+
+
+/* ==========================================
+   JÄRGMINE
+========================================== */
+
+function nextQuestion(){
+
+if(currentQuestion<testQuestions.length-1){
+
+currentQuestion++;
+
+showQuestion();
+
+}else{
+
+finishTest();
+
+}
+
+}
+
+
+/* ==========================================
+   EELMINE
+========================================== */
+
+function previousQuestion(){
+
+if(currentQuestion>0){
+
+currentQuestion--;
+
+showQuestion();
+
+}
+
+}
+
+
+/* ==========================================
+   TAIMER
+========================================== */
+
+function startTimer(){
+
+clearInterval(timerInterval);
+
+timerInterval=setInterval(()=>{
+
+seconds--;
+
+let minutes=Math.floor(seconds/60);
+
+let remainingSeconds=seconds%60;
+
+document.getElementById("timer").innerText=
+
+String(minutes).padStart(2,"0")+":"+
+
+String(remainingSeconds).padStart(2,"0");
+
+if(seconds<=0){
+
+finishTest();
+
+}
+
+},1000);
+
+}
+
+
+/* ==========================================
+   TESTI LÕPETAMINE
+========================================== */
+
+function finishTest(){
+
+clearInterval(timerInterval);
+
+document.getElementById("test").classList.add("hidden");
+
+document.getElementById("results").classList.remove("hidden");
+
+let correct=0;
+
+testQuestions.forEach((q,index)=>{
+
+if(userAnswers[index]===q.correct){
+
+correct++;
+
+}
+
+});
+
+let wrong=testQuestions.length-correct;
+
+let percent=Math.round(correct/testQuestions.length*100);
+
+document.getElementById("score").innerText=percent+"%";
+
+document.getElementById("correctCount").innerText=correct;
+
+document.getElementById("wrongCount").innerText=wrong;
+
+document.getElementById("percentage").innerText=percent+"%";
+
+let message="";
+
+if(percent>=90){
+
+message="Väga tugev tulemus! 🔥";
+
+}else if(percent>=70){
+
+message="Hea tulemus! Jätka harjutamist. 👍";
+
+}else{
+
+message="Soovitan veel liiklusreegleid harjutada. 💪";
+
+}
+
+document.getElementById("resultMessage").innerText=message;
+
+showReview();
+
+}
+
+
+/* ==========================================
+   VALEDE VASTUSTE ÜLEVADE
+========================================== */
+
+function showReview(){
+
+let review=document.getElementById("review");
+
+review.innerHTML="<h2>📚 Vastuste ülevaade</h2>";
+
+testQuestions.forEach((q,index)=>{
+
+if(userAnswers[index]!==q.correct){
+
+let userAnswer=userAnswers[index]!==null
+?q.answers[userAnswers[index]]
+:"Vastamata";
+
+review.innerHTML+=`
+
+<div class="review-item">
+
+<strong>${index+1}. ${q.question}</strong>
+
+<p>
+❌ Sinu vastus: ${userAnswer}
+</p>
+
+<p>
+✅ Õige vastus: ${q.answers[q.correct]}
+</p>
+
+<div class="explanation">
+
+💡 ${q.explanation}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+});
+
+}
+
+
+/* ==========================================
+   AVALEHELE
+========================================== */
+
+function goHome(){
+
+clearInterval(timerInterval);
+
+document.getElementById("test").classList.add("hidden");
+
+document.getElementById("results").classList.add("hidden");
+
+document.getElementById("home").classList.remove("hidden");
+
+}
+
+
+/* ==========================================
+   SISSELOGIMISE KOHT
+========================================== */
+
+function showLogin(){
+
+alert(
+"🚧 Sisselogimine lisatakse järgmises etapis Supabase'iga. " +
+"Siia tuleb konto loomine, sisselogimine, Premium ja admin-paneel."
+);
+
+}
+
+</script>
+
+</body>
+</html>
