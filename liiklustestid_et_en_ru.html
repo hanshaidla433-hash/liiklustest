@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liiklustestid — AM A B C</title>
+<style>
+:root{
+ --bg:#f4f7fb;--card:#fff;--text:#132238;--muted:#66758a;--line:#e3e9f0;
+ --nav:#071426;--blue:#1671f9;--blue2:#0d5ed7;--green:#16a35a;--red:#df4050;
+ --shadow:0 12px 35px rgba(18,39,65,.09)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,select,input{font:inherit}
+button{cursor:pointer}
+.top{height:70px;background:var(--nav);color:#fff;display:flex;align-items:center;padding:0 max(18px,4vw);gap:12px;position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:850;display:flex;gap:10px;align-items:center;margin-right:auto}
+.logoMark{width:35px;height:35px;border:3px solid #1675ff;border-radius:50%;display:grid;place-items:center;font-size:16px}
+.navlinks{display:flex;gap:24px;align-items:center}
+.navlinks a{color:#dfe8f3;text-decoration:none;font-size:14px;font-weight:700}
+.navlinks a:hover{color:#fff}
+.lang{background:#132238;color:#fff;border:1px solid #35465c;border-radius:8px;padding:9px 10px}
+.navbtn{padding:10px 15px;border-radius:9px;border:1px solid #38658f;background:transparent;color:#fff;font-weight:800}
+.navbtn.blue{background:var(--blue);border-color:var(--blue)}
+.hero{min-height:390px;color:#fff;position:relative;background:
+linear-gradient(90deg,rgba(3,14,27,.96) 0%,rgba(3,14,27,.78) 45%,rgba(3,14,27,.18) 100%),
+url("https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=2000&q=88") center/cover}
+.heroInner{max-width:1400px;margin:auto;padding:58px max(18px,4vw);display:flex;align-items:center;gap:55px}
+.heroText{flex:1}
+.eyebrow{display:inline-flex;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:7px 11px;border-radius:99px;font-size:12px;font-weight:800;margin-bottom:16px}
+.hero h1{font-size:clamp(34px,4vw,52px);line-height:1.08;margin:0 0 18px;max-width:720px}
+.hero p{font-size:17px;line-height:1.6;color:#e5edf6;max-width:670px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.btn{border:0;border-radius:10px;padding:13px 19px;font-weight:850}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue2)}
+.btn.ghost{background:transparent;color:#fff;border:1px solid #718399}
+.heroFacts{width:330px;background:rgba(7,20,35,.86);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:18px;box-shadow:0 18px 45px rgba(0,0,0,.22)}
+.fact{display:flex;gap:12px;align-items:center;padding:12px 4px}
+.factIcon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#1675f9;font-weight:900}
+.fact:nth-child(2) .factIcon{background:#18aa58}.fact:nth-child(3) .factIcon{background:#eea914}
+.fact b{display:block}.fact small{color:#cbd6e2}
+.container{max-width:1400px;margin:auto;padding:0 max(18px,4vw) 30px}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:-38px;position:relative;z-index:3}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.card:hover{transform:translateY(-3px)}
+.cardImg{height:170px;position:relative;overflow:hidden}
+.cardImg img{width:100%;height:100%;object-fit:cover;display:block;transition:.3s}
+.card:hover .cardImg img{transform:scale(1.04)}
+.badge{position:absolute;left:14px;bottom:12px;color:#fff;padding:6px 11px;border-radius:8px;font-weight:900;box-shadow:0 5px 15px #0004}
+.am{background:#773be1}.a{background:#0876ee}.b{background:#16a85a}.c{background:#ed9411}
+.cardBody{padding:16px}
+.cardBody h3{margin:0 0 7px;font-size:18px}.cardBody p{color:var(--muted);font-size:13px;line-height:1.5;min-height:40px;margin:0 0 14px}
+.cardBtn{width:100%;border:0;color:#fff;border-radius:9px;padding:11px;font-weight:850}
+.features{margin:16px 0;background:#10263d;color:#fff;border-radius:14px;padding:18px;display:grid;grid-template-columns:repeat(6,1fr);gap:15px}
+.feature{display:flex;gap:9px;align-items:flex-start}.featureIcon{font-size:20px}.feature b{display:block;font-size:12px}.feature small{color:#c6d2df;font-size:10px;line-height:1.4}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 7px 25px rgba(18,39,65,.05)}
+.panel h2{font-size:20px;margin:0 0 16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{text-align:center;border:1px solid var(--line);border-radius:11px;padding:15px}.statIcon{font-size:21px}.stat b{font-size:20px;display:block;margin:5px}.stat small{color:var(--muted);font-size:11px}
+.why{background:linear-gradient(90deg,rgba(255,255,255,.97) 0 53%,rgba(255,255,255,.18)),url("https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1000&q=85") right center/50% 100% no-repeat}
+.why ul{padding:0;margin:0;list-style:none}.why li{margin:12px 0;font-size:14px}.why li:before{content:"✓";color:var(--green);font-weight:900;margin-right:10px}
+footer{background:#0e2339;color:#fff;padding:25px max(18px,4vw);display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+footer b{display:block;font-size:13px}footer small{color:#c8d3df;font-size:11px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(2,10,19,.72);z-index:200;place-items:center;padding:18px}
+.overlay.show{display:grid}
+.modal{background:#fff;width:min(620px,100%);max-height:90vh;overflow:auto;border-radius:18px;padding:24px;box-shadow:0 25px 70px #0005}
+.close{float:right;border:0;background:#edf1f5;border-radius:50%;width:34px;height:34px;font-size:19px}
+.modal h2{margin:0 0 18px}.formLabel{font-size:13px;font-weight:700}.field{width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;margin:6px 0 14px}
+.testTop{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.timer{font-weight:900;background:#edf3fb;padding:9px 12px;border-radius:9px}.progress{height:8px;background:#e8edf3;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--blue);width:0}
+.questionImg{width:100%;height:220px;object-fit:cover;border-radius:12px;margin:16px 0}.answers{display:grid;gap:10px}.answer{padding:13px;text-align:left;background:#f6f8fb;border:1px solid #dce3eb;border-radius:10px}.answer:hover{border-color:#6ca0ef;background:#eef5ff}.answer.selected{border-color:var(--blue);background:#eaf2ff}
+.testActions{display:flex;justify-content:space-between;margin-top:18px;gap:10px}
+.result{text-align:center}.resultScore{font-size:58px;font-weight:900;color:var(--blue);margin:8px}
+@media(max-width:1050px){.navlinks{display:none}.heroInner{display:block}.heroFacts{margin-top:25px;width:min(100%,360px)}.categories{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}}
+@media(max-width:620px){.top{padding:0 14px}.logo{font-size:18px}.lang{display:none}.navbtn{padding:9px 10px;font-size:12px}.hero{min-height:520px}.heroInner{padding:40px 18px}.hero h1{font-size:34px}.container{padding:0 14px 25px}.categories{grid-template-columns:1fr}.features{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.why{background:#fff}footer{grid-template-columns:1fr 1fr}.cardImg{height:190px}.questionImg{height:175px}}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="logo"><span class="logoMark">↯</span><span data-t="brand">Liiklustestid</span></div>
+  <div class="navlinks">
+    <a href="#home" data-t="home">Avaleht</a><a href="#tests" data-t="tests">Testid</a>
+    <a href="#visual" data-t="visual">Pildilised</a><a href="#stats" data-t="statsNav">Statistika</a>
+    <a href="#premium" data-t="premium">Premium</a><a href="#contact" data-t="contact">Kontakt</a>
+  </div>
+  <select class="lang" id="lang"><option value="et">Eesti</option><option value="en">English</option><option value="ru">Русский</option></select>
+  <button class="navbtn" onclick="openAuth('login')" data-t="login">Logi sisse</button>
+  <button class="navbtn blue" onclick="openAuth('register')" data-t="register">Registreeru</button>
+</nav>
+
+<section class="hero" id="home">
+ <div class="heroInner">
+  <div class="heroText">
+   <div class="eyebrow" data-t="eyebrow">🚗 TEADMISTE HARJUTAMISE KESKKOND</div>
+   <h1 data-t="heroTitle">Liiklustestid AM, A, B ja C kategooriale</h1>
+   <p data-t="heroDesc">Valmista end teooriaeksamiks ette mugavalt veebis. Harjuta erinevate liiklusolukordade ja pildiliste küsimustega.</p>
+   <div class="actions"><button class="btn primary" onclick="document.getElementById('tests').scrollIntoView()" data-t="start">Alusta testi ›</button><button class="btn ghost" onclick="showDemo()" data-t="demo">Vaata demo</button></div>
+  </div>
+  <div class="heroFacts">
+   <div class="fact"><span class="factIcon">◷</span><div><b data-t="minutes">30 minutit</b><small data-t="minutesSub">Aega ühe testi lahendamiseks</small></div></div>
+   <div class="fact"><span class="factIcon">?</span><div><b data-t="questions">30 küsimust</b><small data-t="questionsSub">Küsimused läbisegi</small></div></div>
+   <div class="fact"><span class="factIcon">★</span><div><b data-t="practice">Harjuta targemalt</b><small data-t="practiceSub">Vaata pärast testi oma vigu</small></div></div>
+  </div>
+ </div>
+</section>
+
+<main class="container">
+<section class="categories" id="tests">
+ <article class="card"><div class="cardImg"><img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=88" alt="Mootorratas"><span class="badge am">AM</span></div><div class="cardBody"><h3 data-t="amTitle">AM kategooria</h3><p data-t="amDesc">Mopeedid ja AM-kategooria sõidukid.</p><button class="cardBtn am" onclick="startTest('AM')" data-t="startTest">Alusta testi ›</button></div></article>
+ <article class="card"><div class="cardImg"><img src="https://images.unsplash.com/photo-1558980394-0c7f3c3b5e4f?auto=format&fit=crop&w=1000&q=88" alt="Mootorratas teel"><span class="badge a">A</span></div><div class="cardBody"><h3 data-t="aTitle">A kategooria</h3><p data-t="aDesc">Mootorrattad ning kahe- ja kolmerattalised sõidukid.</p><button class="cardBtn a" onclick="startTest('A')" data-t="startTest">Alusta testi ›</button></div></article>
+ <article class="card"><div class="cardImg"><img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1000&q=88" alt="Sõiduauto"><span class="badge b">B</span></div><div class="cardBody"><h3 data-t="bTitle">B kategooria</h3><p data-t="bDesc">Sõiduautod ja muud B-kategooria sõidukid.</p><button class="cardBtn b" onclick="startTest('B')" data-t="startTest">Alusta testi ›</button></div></article>
+ <article class="card"><div class="cardImg"><img src="https://images.unsplash.com/photo-1565610222536-ef125c59da2e?auto=format&fit=crop&w=1000&q=88" alt="Veok"><span class="badge c">C</span></div><div class="cardBody"><h3 data-t="cTitle">C kategooria</h3><p data-t="cDesc">Veokid ja muud C-kategooria sõidukid.</p><button class="cardBtn c" onclick="startTest('C')" data-t="startTest">Alusta testi ›</button></div></article>
+</section>
+
+<section class="features" id="visual">
+ <div class="feature"><span class="featureIcon">🔀</span><div><b data-t="f1">Juhuslik järjestus</b><small data-t="f1s">Iga test on erinev.</small></div></div>
+ <div class="feature"><span class="featureIcon">✓</span><div><b data-t="f2">Vastuste ülevaade</b><small data-t="f2s">Õpi oma vigadest.</small></div></div>
+ <div class="feature"><span class="featureIcon">📷</span><div><b data-t="f3">Pildilised küsimused</b><small data-t="f3s">Fotod liiklusolukordadest.</small></div></div>
+ <div class="feature"><span class="featureIcon">📊</span><div><b data-t="f4">Statistika</b><small data-t="f4s">Jälgi oma arengut.</small></div></div>
+ <div class="feature"><span class="featureIcon">◐</span><div><b data-t="f5">Mugav disain</b><small data-t="f5s">Töötab telefonis ja arvutis.</small></div></div>
+ <div class="feature"><span class="featureIcon">🔒</span><div><b data-t="f6">Premium</b><small data-t="f6s">Rohkem võimalusi konto kaudu.</small></div></div>
+</section>
+
+<section class="grid2" id="stats">
+ <div class="panel"><h2 data-t="yourStats">Sinu statistika</h2><div class="stats">
+  <div class="stat"><span class="statIcon">♙</span><b>0</b><small data-t="s1">Läbitud teste</small></div>
+  <div class="stat"><span class="statIcon">✓</span><b>0%</b><small data-t="s2">Keskmine tulemus</small></div>
+  <div class="stat"><span class="statIcon">★</span><b>0</b><small data-t="s3">Parim tulemus</small></div>
+  <div class="stat"><span class="statIcon">◷</span><b>00:00</b><small data-t="s4">Kogu aeg</small></div>
+ </div></div>
+ <div class="panel why" id="premium"><h2 data-t="why">Miks valida meie liiklustestid?</h2><ul>
+  <li data-t="w1">Erinevad liiklusolukorrad ja pildilised küsimused</li><li data-t="w2">30 küsimust ja 30 minutit</li>
+  <li data-t="w3">Töötab arvutis, tahvlis ja telefonis</li><li data-t="w4">Konto abil saab edusamme salvestada</li><li data-t="w5">Premiumile saab hiljem lisada rohkem teste</li>
+ </ul></div>
+</section>
+</main>
+
+<footer id="contact"><div>🛡️<b data-t="safe">Turvaline keskkond</b><small data-t="safeS">Kontoandmed saab ühendada Supabase'iga.</small></div><div>⚡<b data-t="fast">Kiire ja mugav</b><small data-t="fastS">Alusta testi mõne sekundiga.</small></div><div>🚦<b data-t="updated">Liiklusolukorrad</b><small data-t="updatedS">Harjutamiseks erinevad fotod.</small></div><div>💬<b data-t="help">Abi ja tugi</b><small data-t="helpS">Veebilehte saab edasi arendada.</small></div></footer>
+
+<!-- AUTH -->
+<div class="overlay" id="authOverlay"><div class="modal"><button class="close" onclick="closeOverlay('authOverlay')">×</button><h2 id="authTitle"></h2><label class="formLabel">E-post</label><input class="field" type="email" placeholder="sinu@email.ee"><label class="formLabel">Parool</label><input class="field" type="password" placeholder="••••••••"><button class="btn primary" style="width:100%" id="authButton"></button><p style="font-size:12px;color:#718096;margin-bottom:0" data-t="authNote">See vorm on valmis Supabase Authiga ühendamiseks.</p></div></div>
+
+<!-- TEST -->
+<div class="overlay" id="testOverlay"><div class="modal">
+<button class="close" onclick="closeOverlay('testOverlay')">×</button>
+<div class="testTop"><div><b id="testCat"></b><div id="qCount"></div></div><div class="timer" id="timer">30:00</div></div>
+<div class="progress"><i id="progress"></i></div>
+<img id="questionImg" class="questionImg" src="" alt="Liiklusolukorra foto">
+<h2 id="question"></h2><div class="answers" id="answers"></div>
+<div class="testActions"><button class="btn ghost" style="color:#17304b;border:1px solid #ccd5df" onclick="previousQuestion()" id="prevBtn"></button><button class="btn primary" onclick="nextQuestion()" id="nextBtn"></button></div>
+</div></div>
+
+<div class="overlay" id="resultOverlay"><div class="modal result"><button class="close" onclick="closeOverlay('resultOverlay')">×</button><h2 id="resultTitle"></h2><div class="resultScore" id="resultScore"></div><p id="resultText"></p><button class="btn primary" onclick="closeOverlay('resultOverlay')" data-t="close">Sulge</button></div></div>
+
+<script>
+const T={
+et:{brand:"Liiklustestid",home:"Avaleht",tests:"Testid",visual:"Pildilised",statsNav:"Statistika",premium:"Premium",contact:"Kontakt",login:"Logi sisse",register:"Registreeru",eyebrow:"🚗 TEADMISTE HARJUTAMISE KESKKOND",heroTitle:"Liiklustestid AM, A, B ja C kategooriale",heroDesc:"Valmista end teooriaeksamiks ette mugavalt veebis. Harjuta erinevate liiklusolukordade ja pildiliste küsimustega.",start:"Alusta testi ›",demo:"Vaata demo",minutes:"30 minutit",minutesSub:"Aega ühe testi lahendamiseks",questions:"30 küsimust",questionsSub:"Küsimused läbisegi",practice:"Harjuta targemalt",practiceSub:"Vaata pärast testi oma vigu",amTitle:"AM kategooria",amDesc:"Mopeedid ja AM-kategooria sõidukid.",aTitle:"A kategooria",aDesc:"Mootorrattad ning kahe- ja kolmerattalised sõidukid.",bTitle:"B kategooria",bDesc:"Sõiduautod ja muud B-kategooria sõidukid.",cTitle:"C kategooria",cDesc:"Veokid ja muud C-kategooria sõidukid.",startTest:"Alusta testi ›",f1:"Juhuslik järjestus",f1s:"Iga test on erinev.",f2:"Vastuste ülevaade",f2s:"Õpi oma vigadest.",f3:"Pildilised küsimused",f3s:"Fotod liiklusolukordadest.",f4:"Statistika",f4s:"Jälgi oma arengut.",f5:"Mugav disain",f5s:"Töötab telefonis ja arvutis.",f6:"Premium",f6s:"Rohkem võimalusi konto kaudu.",yourStats:"Sinu statistika",s1:"Läbitud teste",s2:"Keskmine tulemus",s3:"Parim tulemus",s4:"Kogu aeg",why:"Miks valida meie liiklustestid?",w1:"Erinevad liiklusolukorrad ja pildilised küsimused",w2:"30 küsimust ja 30 minutit",w3:"Töötab arvutis, tahvlis ja telefonis",w4:"Konto abil saab edusamme salvestada",w5:"Premiumile saab hiljem lisada rohkem teste",safe:"Turvaline keskkond",safeS:"Kontoandmed saab ühendada Supabase'iga.",fast:"Kiire ja mugav",fastS:"Alusta testi mõne sekundiga.",updated:"Liiklusolukorrad",updatedS:"Harjutamiseks erinevad fotod.",help:"Abi ja tugi",helpS:"Veebilehte saab edasi arendada.",authNote:"See vorm on valmis Supabase Authiga ühendamiseks.",close:"Sulge",next:"Järgmine ›",prev:"‹ Eelmine",demoText:"Vali AM, A, B või C ja alusta 30 küsimusega harjutustesti."},
+en:{brand:"Driving Tests",home:"Home",tests:"Tests",visual:"Pictures",statsNav:"Statistics",premium:"Premium",contact:"Contact",login:"Log in",register:"Register",eyebrow:"🚗 THEORY TEST PRACTICE",heroTitle:"Driving tests for AM, A, B and C categories",heroDesc:"Prepare for your theory exam online. Practise different traffic situations and picture-based questions.",start:"Start test ›",demo:"View demo",minutes:"30 minutes",minutesSub:"Time for one test",questions:"30 questions",questionsSub:"Questions in random order",practice:"Practise smarter",practiceSub:"Review your mistakes afterwards",amTitle:"AM category",amDesc:"Mopeds and AM-category vehicles.",aTitle:"A category",aDesc:"Motorcycles and two- or three-wheeled vehicles.",bTitle:"B category",bDesc:"Cars and other B-category vehicles.",cTitle:"C category",cDesc:"Trucks and other C-category vehicles.",startTest:"Start test ›",f1:"Random order",f1s:"A different test each time.",f2:"Answer review",f2s:"Learn from mistakes.",f3:"Picture questions",f3s:"Real traffic photos.",f4:"Statistics",f4s:"Track your progress.",f5:"Responsive design",f5s:"Works on phone and computer.",f6:"Premium",f6s:"More options with an account.",yourStats:"Your statistics",s1:"Tests completed",s2:"Average score",s3:"Best result",s4:"Total time",why:"Why choose our driving tests?",w1:"Different traffic situations and picture questions",w2:"30 questions and 30 minutes",w3:"Works on computer, tablet and phone",w4:"Save progress with an account",w5:"More tests can be added to Premium later",safe:"Secure environment",safeS:"Account data can be connected to Supabase.",fast:"Fast and convenient",fastS:"Start a test in seconds.",updated:"Traffic situations",updatedS:"Different photos for practice.",help:"Help and support",helpS:"The website can be expanded further.",authNote:"This form is ready to be connected to Supabase Auth.",close:"Close",next:"Next ›",prev:"‹ Previous",demoText:"Choose AM, A, B or C to start a 30-question practice test."},
+ru:{brand:"Автотесты",home:"Главная",tests:"Тесты",visual:"Картинки",statsNav:"Статистика",premium:"Премиум",contact:"Контакты",login:"Войти",register:"Регистрация",eyebrow:"🚗 ТРЕНИРОВКА ТЕОРИИ",heroTitle:"Тесты AM, A, B и C категорий",heroDesc:"Готовьтесь к теоретическому экзамену онлайн. Тренируйтесь на разных дорожных ситуациях и вопросах с картинками.",start:"Начать тест ›",demo:"Демо",minutes:"30 минут",minutesSub:"Время на один тест",questions:"30 вопросов",questionsSub:"Вопросы в случайном порядке",practice:"Тренируйтесь эффективнее",practiceSub:"После теста смотрите ошибки",amTitle:"Категория AM",amDesc:"Мопеды и транспортные средства категории AM.",aTitle:"Категория A",aDesc:"Мотоциклы и двух- или трёхколёсные транспортные средства.",bTitle:"Категория B",bDesc:"Легковые автомобили и другие транспортные средства категории B.",cTitle:"Категория C",cDesc:"Грузовые автомобили и другие транспортные средства категории C.",startTest:"Начать тест ›",f1:"Случайный порядок",f1s:"Каждый раз новый тест.",f2:"Разбор ответов",f2s:"Учитесь на ошибках.",f3:"Вопросы с картинками",f3s:"Реальные фото дорожных ситуаций.",f4:"Статистика",f4s:"Следите за прогрессом.",f5:"Адаптивный дизайн",f5s:"Работает на телефоне и компьютере.",f6:"Премиум",f6s:"Больше возможностей с аккаунтом.",yourStats:"Ваша статистика",s1:"Пройдено тестов",s2:"Средний результат",s3:"Лучший результат",s4:"Общее время",why:"Почему выбирают наши тесты?",w1:"Разные дорожные ситуации и вопросы с картинками",w2:"30 вопросов и 30 минут",w3:"Работает на компьютере, планшете и телефоне",w4:"Сохраняйте прогресс с аккаунтом",w5:"Позже в Premium можно добавить больше тестов",safe:"Безопасная среда",safeS:"Данные аккаунта можно подключить к Supabase.",fast:"Быстро и удобно",fastS:"Начните тест за несколько секунд.",updated:"Дорожные ситуации",updatedS:"Разные фотографии для тренировки.",help:"Помощь и поддержка",helpS:"Сайт можно дальше развивать.",authNote:"Эта форма готова для подключения Supabase Auth.",close:"Закрыть",next:"Следующий ›",prev:"‹ Предыдущий",demoText:"Выберите AM, A, B или C, чтобы начать тренировочный тест из 30 вопросов."}
+};
+
+let current="et";
+function applyLang(){
+ const t=T[current];
+ document.documentElement.lang=current;
+ document.querySelectorAll("[data-t]").forEach(el=>{let k=el.dataset.t;if(t[k]!==undefined)el.innerHTML=t[k]});
+}
+document.getElementById("lang").addEventListener("change",e=>{current=e.target.value;applyLang()});
+
+function openAuth(type){
+ document.getElementById("authOverlay").classList.add("show");
+ document.getElementById("authTitle").textContent=type==="login"?T[current].login:T[current].register;
+ document.getElementById("authButton").textContent=type==="login"?T[current].login:T[current].register;
+}
+function closeOverlay(id){document.getElementById(id).classList.remove("show")}
+function showDemo(){alert(T[current].demoText)}
+
+const photos=[
+ "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=88",
+ "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=88",
+ "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=88",
+ "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=88",
+ "https://images.unsplash.com/photo-1558980394-0c7f3c3b5e4f?auto=format&fit=crop&w=1200&q=88",
+ "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1200&q=88"
+];
+
+const questions={
+AM:[
+["Mida peab juht enne sõidu alustamist kontrollima?","Sõiduki ohutust ja korrasolekut","Ainult kütusetaset","Ainult signaali"],
+["Mida tähendab punane foorituli?","Peatumist","Sõidu jätkamist","Ainult kiiruse vähendamist"],
+["Mida tuleb teha jalakäijale ülekäigurajal lähenedes?","Olla valmis peatuma ja anda talle teed","Kiirendada","Anda ainult helisignaali"],
+["Miks peab turvavarustus olema õigesti kinnitatud?","Et vähendada vigastuste riski","Et sõiduk kiiremini liiguks","Et kütust säästa"],
+["Mida tähendab liiklusmärk STOP?","Peatumine on kohustuslik","Peatumine on soovituslik","Sõiduk peab pöörama"],
+["Millal tuleb kasutada suunatuld?","Enne suuna või sõiduraja muutmist","Ainult öösel","Ainult linnast väljas"],
+["Miks on märg tee ohtlikum?","Pidurdusteekond võib pikeneda","Sõiduk muutub kergemaks","Rehvid muutuvad suuremaks"],
+["Mida teha libeduse korral?","Vähendada kiirust ja vältida järske manöövreid","Pidurdada järsult","Kiirendada"],
+["Mida näitab kiirusmõõdik?","Sõiduki hetkekiirust","Mootori temperatuuri","Kütusekulu"],
+["Miks ei tohi sõidu ajal telefoni käsitseda?","See vähendab tähelepanu liiklusele","Telefon võib sõiduki peatada","See suurendab nähtavust"],
+["Mida teha pimeda ajal vastutuleva sõiduki puhul?","Vajadusel lülitada kaugtuled lähituledele","Lülitada kõik tuled välja","Kiirendada"],
+["Mis aitab vähendada õnnetuse riski?","Õige kiirus, tähelepanelikkus ja piisav pikivahe","Suur kiirus","Järsud manöövrid"],
+["Mida tähendab pidev teemärgistusjoon?","Seda ei tohi tavaliselt ületada","See näitab parkimiskohta","See on alati soovituslik"],
+["Miks tuleb enne möödasõitu olukorda hinnata?","Et veenduda manöövri ohutuses","Et sõita kiiremini","Et vähendada nähtavust"],
+["Mida teha, kui nähtavus on halb?","Vähendada kiirust","Suurendada kiirust","Sõita ilma tuledeta"],
+["Miks on pikivahe oluline?","See annab aega reageerimiseks ja pidurdamiseks","See vähendab rehvide kulumist alati","See võimaldab sõita kiiremini"],
+["Mida teha, kui sõiduk hakkab külglibisemisse minema?","Vältida järske tegevusi ja taastada kontroll rahulikult","Keerata rooli järsult vastassuunas","Tõmmata käsipidurit"],
+["Millal on helisignaali kasutamine põhjendatud?","Ohu ennetamiseks või tähelepanu juhtimiseks vastavalt olukorrale","Meelelahutuseks","Alati ristmikul"],
+["Miks tuleb enne ristmikku kiirust kohandada?","Et jõuaks olukorrale reageerida","Et mootor rohkem pöördeid teeks","Et teisi juhte segada"],
+["Mida tuleb teha enne sõiduraja vahetamist?","Kontrollida peegleid ja pimenurka ning anda suunatuld","Ainult suunatuld näidata","Ainult peeglisse vaadata"],
+["Mis mõjutab pidurdusteekonna pikkust?","Kiirus, teeolud, rehvid ja juhi reaktsiooniaeg","Ainult sõiduki värv","Ainult kellaaeg"],
+["Mida teha, kui sõiduki rehvis on liiga vähe rõhku?","Kontrollida ja korrigeerida rõhk tootja nõuete järgi","Suurendada kiirust","Ignoreerida"],
+["Miks tuleb sõiduki koorem kinnitada?","Et see ei liiguks ega ohustaks liiklejaid","Et sõiduk oleks raskem","Et kütusekulu suureneks"],
+["Mida teha hädaolukorras?","Tagada esmalt enda ja teiste ohutus ning kutsuda abi","Lahkuda kohe sündmuskohalt","Jätta ohukolmnurk koju"],
+["Mida tähendab kollane foorituli?","See hoiatab tuleva punase tule eest ja nõuab üldjuhul peatumist","See tähendab alati sõitu","See lubab ainult tagurdada"],
+["Miks peab arvestama teiste liiklejate võimalike vigadega?","Et ennetada ohtlikke olukordi","Et nende eest karistust saada","Et sõita kiiremini"],
+["Mida teha, kui sõiduk ees pidurdab järsult?","Pidurdada ja hoida kontrolli, vältides liigset roolimist","Möödasõidule kohe minna","Kiirendada"],
+["Miks on öösel oluline puhas esiklaas?","See vähendab valguse peegeldusi ja parandab nähtavust","See suurendab mootori võimsust","See vähendab rehvirõhku"],
+["Mida tähendab turvaline sõidukiirus?","Kiirus, mis arvestab tee, ilma ja liiklusoludega","Alati suurim lubatud kiirus","Alati kõige väiksem kiirus"],
+["Miks tuleb liiklusmärke tähelepanelikult jälgida?","Need annavad infot liikluskorralduse ja ohtude kohta","Need näitavad ainult ilma","Need on ainult soovitused"]
+],
+A:[
+["Miks peab mootorrattur enne sõitu kaitsevarustust kasutama?","See vähendab vigastuste riski","See suurendab mootori võimsust","See vähendab nähtavust"],
+["Mida tuleb kurvis teha?","Valida sobiv kiirus enne kurvi ja hoida sujuvat trajektoori","Pidurdada järsult keset kurvi","Kiirendada alati maksimaalselt"],
+["Miks on mootorrattal rehvide seisukord eriti oluline?","Rehvid on kontakt teega ja mõjutavad juhitavust","Rehvid mõjutavad ainult välimust","Rehvid ei mõjuta pidurdamist"],
+["Mida tuleb märjal teel arvestada?","Haardumine võib väheneda","Mootor muutub võimsamaks","Pidurdusteekond lüheneb alati"],
+["Mida teha enne sõiduraja vahetust mootorrattaga?","Kontrollida peegleid ja pimenurka ning anda suunatuld","Vaadata ainult ette","Kiirendada ja mitte vaadata taha"],
+["Miks võib mootorratas olla teistele raskemini märgatav?","Selle mõõtmed on väiksemad","Sellel pole alati pidureid","Sellel pole rehve"],
+["Mida teha külgtuule korral?","Hoida kindlat asendit ja kohandada kiirust","Lasta roolist lahti","Kiirendada järsult"],
+["Miks tuleb sõita piisava pikivahega?","Mootorrattur vajab aega ja ruumi reageerimiseks","Et teised ei saaks mööda","Et mootor jahtuks"],
+["Mida teha, kui teekattel on liiv või kruus?","Vähendada kiirust ja vältida järske liigutusi","Pidurdada maksimaalselt","Kiirendada"],
+["Miks on nähtavus kurvis oluline?","See määrab, kas manööver on ohutu","See mõjutab ainult kütusekulu","See pole oluline"],
+["Mida tähendab vastassuunavööndi ületamine möödasõidul?","Seda võib teha ainult siis, kui reeglid ja olukord seda lubavad ning manööver on ohutu","Seda võib alati teha","Seda tuleb teha igal ristmikul"],
+["Miks tuleb mootorratta pidureid kontrollida?","Et need töötaksid usaldusväärselt","Et tuled heledamad oleksid","Et rehvid suureneksid"],
+["Mida teha, kui nähtavus halveneb vihma tõttu?","Vähendada kiirust ja parandada nähtavust tulede ning sobiva sõiduasendiga","Sõita kiiremini","Lülitada tuled välja"],
+["Miks on õige sõiduasend tähtis?","See aitab säilitada kontrolli ja tasakaalu","See vähendab rehvirõhku","See suurendab liiklusmärkide arvu"],
+["Mida teha, kui ees olev sõiduk varjab vaadet?","Hoida pikivahet ja mitte teha nähtavuseta möödasõitu","Sõita talle väga lähedale","Möödasõitu alustada pimesi"],
+["Millal võib mootorratturil olla raske pidurdada?","Libedal või ebatasasel teel","Kuival sirgel alati","Seistes"],
+["Miks tuleb ristmikul olla eriti tähelepanelik?","Teiste liiklejate liikumissuunad võivad ristuda","Seal ei tohi kunagi peatuda","Seal puudub liiklus"],
+["Mida teha, kui sõiduk hakkab kalduma?","Säilitada rahu ja vältida järske rooliliigutusi","Tõmmata kohe käsipidurit","Sulgeda silmad"],
+["Miks ei tohi sõita väsinuna?","Reaktsioon ja tähelepanu võivad halveneda","Mootor kulub vähem","Pidurid muutuvad tugevamaks"],
+["Mida peab arvestama reisija vedamisel?","Mootorratta tasakaal ja juhitavus võivad muutuda","Mitte midagi","Ainult kütusetaset"],
+["Mida teha enne sõitu?","Kontrollida sõiduki olulisi süsteeme ja varustust","Kontrollida ainult värvi","Kontrollida ainult istet"],
+["Miks tuleb kiirus valida nähtavuse järgi?","Et jõuaks ohu korral reageerida","Et sõit oleks alati kiirem","Et teised ei jõuaks järele"],
+["Mida teha, kui vastutulev sõiduk läheneb kurvis?","Hoida oma sõidupoolel ja kohandada kiirust","Lõigata kurvi","Sõita tee keskele"],
+["Miks on märgistatud teekatte märgadel aladel libedus võimalik?","Haardumine võib olla väiksem","Märgistus suurendab alati pidamist","Mootorratas muutub raskemaks"],
+["Mida teha, kui tuul puhub külgsuunast tugevalt?","Vähendada kiirust ja hoida stabiilset trajektoori","Sõita tee servas väga kiiresti","Lasta juhtrauast lahti"],
+["Miks tuleb kaitsekiivrit õigesti kinnitada?","Et see püsiks õnnetuse korral paigal","Et see oleks ilusam","Et sõiduk kiiremini liiguks"],
+["Mida teha enne järsku manöövrit?","Hinnata ruumi, kiirust ja teisi liiklejaid","Manööverdada kohe","Sulgeda silmad"],
+["Miks on sõiduki tehniline seisukord oluline?","See mõjutab otseselt ohutust","See mõjutab ainult välimust","See mõjutab ainult raadio heli"],
+["Mida teha, kui pidurdamisel tekib ebastabiilsus?","Vältida paanikat ja pidurdada kontrollitult vastavalt teeoludele","Kiirendada","Lasta juhtrauast lahti"],
+["Mida tähendab ettenägelik sõit?","Ohtude varajast märkamist ja nende ennetamist","Ainult suure kiirusega sõitmist","Ainult teiste jälgimist"]
+],
+B:[
+["Mida tuleb enne sõidu alustamist kontrollida?","Sõiduki ohutust ja korrasolekut","Ainult raadiot","Ainult värvi"],
+["Mida tähendab punane foorituli?","Peatumist","Sõidu jätkamist","Kiiruse suurendamist"],
+["Mida tuleb teha enne sõiduraja vahetamist?","Kontrollida peegleid ja pimenurka ning anda suunatuld","Ainult kiirendada","Ainult helisignaali kasutada"],
+["Miks on pikivahe oluline?","See annab aega reageerimiseks ja pidurdamiseks","See säästab alati kütust","See lubab alati möödasõitu"],
+["Mida tähendab STOP-märk?","Peatumine on kohustuslik","Ainult kiiruse vähendamine","Parkimine"],
+["Miks tuleb enne möödasõitu veenduda nähtavuses?","Et manööver oleks ohutu","Et sõita kiiremini","Et teisi üllatada"],
+["Mida teha vihma korral?","Vähendada kiirust ja arvestada pikema pidurdusteekonnaga","Kiirendada","Lülitada tuled välja"],
+["Miks ei tohi sõidu ajal telefoni käsitseda?","Tähelepanu võib liikluselt kõrvale kalduda","Telefon suurendab kiirust","Telefon parandab pidureid"],
+["Mida teha ülekäigurajale lähenedes?","Arvestada jalakäijatega ja olla valmis peatuma","Kiirendada","Sõita alati keskelt"],
+["Mida mõjutab rehvirõhk?","Juhitavust, pidamist ja pidurduskäitumist","Ainult raadio heli","Ainult tulede värvi"],
+["Mida teha halva nähtavuse korral?","Vähendada kiirust ja kasutada sobivaid tulesid","Sõita kiiremini","Sõita ilma tuledeta"],
+["Miks tuleb turvavöö kinnitada?","See aitab õnnetuse korral vähendada vigastusi","See suurendab kiirust","See säästab rehve"],
+["Mida teha, kui ees olev sõiduk pidurdab?","Pidurdada õigeaegselt ja säilitada kontroll","Mööda sõita pimesi","Kiirendada"],
+["Miks tuleb ristmikul olla tähelepanelik?","Liiklejate teed võivad ristuda","Seal pole liiklust","Seal võib alati tagurdada"],
+["Mida tähendab ohutu kiirus?","Oludele vastav kiirus, millega suudad sõidukit kontrollida","Alati maksimaalne lubatud kiirus","Alati 20 km/h"],
+["Mida teha libedal teel?","Vältida järske pidurdusi ja rooliliigutusi","Kiirendada","Tõmmata käsipidurit"],
+["Miks peab koorem olema kinnitatud?","Et see ei liiguks ega ohustaks sõitjaid","Et auto oleks raskem","Et mootor töötaks kiiremini"],
+["Mida teha enne tagurdamist?","Veenduda, et manööver on ohutu ja ümbrus kontrollitud","Tagurdada kohe","Vaadata ainult peeglisse"],
+["Mida tähendab kollane foorituli?","See hoiatab peatselt süttiva punase tule eest","See tähendab alati sõitu","See tähendab parkimist"],
+["Miks on pime nurk ohtlik?","Seal võib olla sõiduk või muu liikleja, keda peeglist ei näe","Seal pole kunagi kedagi","Seal võib ainult jalgratas olla"],
+["Mida teha hädaolukorras?","Tagada ohutus ja kutsuda vajadusel abi","Sõita kohe minema","Peita ohukolmnurk"],
+["Miks tuleb liiklusmärke jälgida?","Need annavad liikluskorralduse ja ohtude kohta infot","Need on ainult soovitused","Need on dekoratsioon"],
+["Mida teha enne pööramist?","Valida õige asukoht, anda suunatuld ja jälgida teisi","Kiirendada","Pidurdada alles pärast pööret"],
+["Miks on puhas esiklaas tähtis?","See parandab nähtavust","See suurendab mootori võimsust","See vähendab auto massi"],
+["Mida teha väsimuse korral?","Peatada sõit ohutus kohas ja puhata","Sõita kiiremini","Avada ainult aken ja jätkata kindlasti"],
+["Miks tuleb arvestada teiste võimalike vigadega?","See aitab ohtu ennetada","See lubab reegleid rikkuda","See muudab auto kiiremaks"],
+["Mida mõjutab sõiduki kiirus kokkupõrkes?","Kokkupõrke raskust ja pidurdusteekonda","Ainult auto värvi","Ainult mootori häält"],
+["Mida teha, kui liiklusolukord on ebaselge?","Vähendada kiirust ja olla valmis peatuma","Kiirendada","Sõita silmad kinni"],
+["Miks on ohutu sõiduasend tähtis?","See aitab säilitada kontrolli sõiduki üle","See parandab raadio heli","See vähendab kütusepaaki"],
+["Mida tähendab ennetav sõit?","Ohtude varajast märkamist ja nende vältimist","Ainult möödasõitu","Ainult aeglast sõitu"]
+],
+C:[
+["Miks peab veokijuht arvestama sõiduki mõõtmetega?","Pöörderaadius ja manööverdamiseks vajalik ruum võivad olla suuremad","Veok muutub alati väiksemaks","Mõõtmed ei mõjuta sõitu"],
+["Mida tuleb enne sõitu kontrollida?","Sõiduki, rehvide, tulede ja koorma ohutust","Ainult raadiot","Ainult kütusepaagi korki"],
+["Miks on koorma kinnitamine oluline?","Lahtine koorem võib liikuda ja põhjustada ohu","See suurendab alati kiirust","See parandab ainult välimust"],
+["Mida peab arvestama suure sõiduki pööramisel?","Tagumine osa võib liikuda teistsugust trajektoori mööda","Kõik rattad liiguvad samas kohas","Sõiduk muutub lühemaks"],
+["Miks vajab raske sõiduk pikemat pidurdusteekonda?","Mass ja kiirus mõjutavad pidurdamist","Rehvid ei puutu teega","Mootor pidurdab alati kohe"],
+["Mida teha enne tagurdamist?","Kontrollida ümbrust ja veenduda manöövri ohutuses","Tagurdada kohe","Sõita ainult peegleid kasutamata"],
+["Miks on veoki pimenurgad olulised?","Seal võivad olla liiklejad, keda juht ei näe","Seal ei saa kunagi sõita","Seal on alati tühi ruum"],
+["Mida teha märjal teel raske sõidukiga?","Kohandada kiirust ja arvestada pikema pidurdusteekonnaga","Kiirendada","Pidurdada järsult igas olukorras"],
+["Miks tuleb enne sõiduraja vahetamist pimenurka kontrollida?","Suur sõiduk võib seal varjata teist liiklejat","Pimenurgas pole kunagi kedagi","Ainult sõiduauto võib seal olla"],
+["Mida tähendab turvaline kiirus raske sõidukiga?","Kiirus, mis arvestab massi, tee- ja ilmaolusid","Alati suurim lubatud kiirus","Alati sama kiirus"],
+["Mida teha, kui koorem hakkab liikuma?","Peatada sõiduk ohutult ja kõrvaldada põhjus","Kiirendada","Jätkata sõitu muutusteta"],
+["Miks on rehvide seisukord oluline?","Need mõjutavad pidamist, juhitavust ja pidurdamist","Ainult kütusepaaki","Ainult mootori heli"],
+["Mida peab arvestama kurvis?","Sõiduki massi, kiirust, nähtavust ja trajektoori","Ainult raadio helitugevust","Ainult tee värvi"],
+["Mida teha halva nähtavuse korral?","Vähendada kiirust ja kasutada sobivaid tulesid","Kiirendada","Sõita ilma tuledeta"],
+["Miks tuleb hoida piisavat pikivahet?","Raske sõiduki peatamiseks võib kuluda rohkem ruumi","Et teised ei saaks mööda","Et mootor kuumeneks"],
+["Mida teha ristmikul suure sõidukiga?","Arvestada suurema pöörde- ja manööverdamisruumiga","Pöörata alati kõige kitsamalt","Kiirendada pöördes"],
+["Miks tuleb liiklusmärke hoolikalt jälgida?","Mõned piirangud võivad sõltuda sõiduki massist või mõõtmetest","Need on ainult soovitused","Need kehtivad ainult jalakäijatele"],
+["Mida teha enne möödasõitu?","Veenduda, et nähtavus, ruum ja liiklusolukord lubavad ohutut manöövrit","Möödasõit alustada kohe","Sõita vastassuunas pikalt"],
+["Miks on sõiduki kõrgus oluline?","See võib mõjutada läbipääsu sillast või muust rajatisest","See mõjutab ainult rehve","See ei ole oluline"],
+["Mida teha, kui tee on kitsas?","Vähendada kiirust ja valida trajektoor, mis jätab piisava ohutusruumi","Kiirendada","Sõita võimalikult ääres sõltumata olukorrast"],
+["Miks peab koorma mass olema nõuetele vastav?","Ülekoormus võib halvendada juhitavust ja suurendada pidurdusteekonda","See muudab auto alati ohutumaks","See parandab rehve"],
+["Mida teha enne järsku laskumist?","Valida sobiv kiirus ja kasutada sõiduki pidurdussüsteemi õigesti","Sõita vabakäigul","Kiirendada"],
+["Miks on laskumisel kiiruskontroll tähtis?","Kiirus võib suureneda ning raske sõiduki peatamine nõuab rohkem ruumi","Mootor seiskub alati","Rehvid muutuvad väiksemaks"],
+["Mida teha, kui sõiduki pidurid käituvad ebatavaliselt?","Peatada ohutult ja kontrollida probleemi","Jätkata kiiresti","Ignoreerida"],
+["Miks tuleb arvestada külgtuulega?","Suur sõiduk võib tuulele rohkem reageerida","Tuul mõjutab ainult raadiot","Tuul muudab sõiduki lühemaks"],
+["Mida teha, kui tagurdamisel nähtavus on piiratud?","Kasutada võimalusel juhendajat ja liikuda eriti ettevaatlikult","Tagurdada kiiremini","Sulgeda silmad"],
+["Miks peab juht puhkama?","Väsimus vähendab tähelepanu ja reaktsioonikiirust","Väsimus parandab keskendumist","Väsimus säästab kütust"],
+["Mida teha, kui sõiduk ees pidurdab järsult?","Pidurdada varakult ja säilitada piisav kontroll","Möödasõidule kohe minna","Kiirendada"],
+["Miks tuleb arvestada sõiduki külg- ja tagumõõtmetega?","Need mõjutavad manööverdamist ja teistele liiklejatele jäetavat ruumi","Need mõjutavad ainult värvi","Need ei mõjuta midagi"],
+["Mida tähendab ennetav raske sõiduki juhtimine?","Ohtude varajast märkamist ja manöövrite ette planeerimist","Ainult kiiret sõitu","Ainult pidurdamist"]
+]
+};
+
+let state={cat:"",items:[],index:0,answers:[],seconds:1800,interval:null};
+
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startTest(cat){
+ state.cat=cat;state.items=shuffle(questions[cat]).slice(0,30);state.index=0;state.answers=Array(30).fill(null);state.seconds=1800;
+ document.getElementById("testOverlay").classList.add("show");renderQuestion();clearInterval(state.interval);state.interval=setInterval(tick,1000);
+}
+function tick(){state.seconds--;if(state.seconds<=0){state.seconds=0;finishTest()}updateTimer()}
+function updateTimer(){let m=Math.floor(state.seconds/60),s=state.seconds%60;document.getElementById("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function renderQuestion(){
+ const q=state.items[state.index],t=T[current];
+ document.getElementById("testCat").textContent=state.cat+" — "+t.questions;
+ document.getElementById("qCount").textContent=(state.index+1)+" / 30";
+ document.getElementById("progress").style.width=((state.index+1)/30*100)+"%";
+ document.getElementById("question").textContent=q[0];
+ document.getElementById("questionImg").src=photos[state.index%photos.length];
+ document.getElementById("questionImg").alt=current==="et"?"Liiklusolukorra foto":current==="en"?"Traffic situation photo":"Фото дорожной ситуации";
+ document.getElementById("answers").innerHTML="";
+ shuffle([q[1],q[2],q[3]]).forEach(ans=>{
+   const b=document.createElement("button");b.className="answer";b.textContent=ans;
+   if(state.answers[state.index]===ans)b.classList.add("selected");
+   b.onclick=()=>{state.answers[state.index]=ans;renderQuestion()};
+   document.getElementById("answers").appendChild(b);
+ });
+ document.getElementById("prevBtn").textContent=t.prev;
+ document.getElementById("nextBtn").textContent=state.index===29?(current==="et"?"Lõpeta ›":current==="en"?"Finish ›":"Завершить ›"):t.next;
+ updateTimer();
+}
+function nextQuestion(){if(state.index<29){state.index++;renderQuestion()}else finishTest()}
+function previousQuestion(){if(state.index>0){state.index--;renderQuestion()}}
+function finishTest(){
+ clearInterval(state.interval);
+ let correct=0;state.items.forEach((q,i)=>{if(state.answers[i]===q[1])correct++});
+ let pct=Math.round(correct/30*100);
+ closeOverlay("testOverlay");document.getElementById("resultOverlay").classList.add("show");
+ document.getElementById("resultTitle").textContent=current==="et"?"Test lõpetatud!":current==="en"?"Test finished!":"Тест завершён!";
+ document.getElementById("resultScore").textContent=pct+"%";
+ document.getElementById("resultText").textContent=current==="et"?`Õiged vastused: ${correct}/30. See on harjutustest — ametliku eksami tingimused võivad erineda.`:current==="en"?`Correct answers: ${correct}/30. This is a practice test — official exam conditions may differ.`:`Правильных ответов: ${correct}/30. Это тренировочный тест — условия официального экзамена могут отличаться.`;
+}
+applyLang();
+</script>
+</body>
+</html>
